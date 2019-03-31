@@ -1,7 +1,7 @@
 
-export class GreySquare{
+export class GreySquare {
 
-    constructor(X,Y, image, idGreySquare, ){
+    constructor(X, Y, image, idGreySquare, ) {
         this.X = X;
         this.Y = Y;
         this.image = image;

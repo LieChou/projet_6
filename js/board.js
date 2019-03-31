@@ -1,11 +1,12 @@
 import { GreySquare } from "./greySquare.js";
-import { Character } from "./character.js";
+import { Characters } from "./characters.js";
 import { Gun } from "./gun.js";
+import { CharacterManager } from "./characterManager.js";
 
 
 export class Board {
 
-    constructor(maxHeight, maxWidth, initialPositionX, initialPositionY, greySquareNumber) {
+    constructor(maxHeight, maxWidth, initialPositionX, initialPositionY, greySquareNumber, gun) {
         this.maxHeight = maxHeight;
         this.maxWidth = maxWidth;
         this.squareSize = maxWidth / 10;
@@ -33,6 +34,7 @@ export class Board {
         this.viewedCharacters = [];
         this.greySquares = [];
         this.gunNumber = 3;
+        this.gun = gun;
         this.guns = [
             {
                 "name": "Galaxy Laser2",
@@ -111,7 +113,7 @@ export class Board {
             let randomCharacterNumber = Math.floor(Math.random() * (this.squareNumber - 1));
             if (this.squareList[randomCharacterNumber].squareIdentification !== "emptySquare") {
                 i--;
-            } else if ((this.squareList[randomCharacterNumber].squareIdentification == "emptySquare") && ((this.squareList[randomCharacterNumber - 1].squareIdentification === "characterHere") || (this.squareList[randomCharacterNumber + 1].squareIdentification === "characterHere"))) {
+            } else if ((this.squareList[randomCharacterNumber].squareIdentification === "emptySquare") && ((this.squareList[randomCharacterNumber - 1].squareIdentification === "characterHere") || (this.squareList[randomCharacterNumber + 1].squareIdentification === "characterHere"))) {
                 i--; //on relance si le perso créé est à côté d'un autre perso
             } else {
                 this.squareList[randomCharacterNumber].squareIdentification = "characterHere";
@@ -125,7 +127,7 @@ export class Board {
                 let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
                 let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
                 let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[i].X, this.squareList[i].Y);
-                const newCharacter = new Character(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[i].X, this.squareList[i].Y, idCharacter, this);
+                const newCharacter = new CharacterManager(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[i].X, this.squareList[i].Y, idCharacter, this);
                 this.viewedCharacters.push(newCharacter);
                 let characterImage = new Image();
                 characterImage.src = newCharacter.image;
@@ -136,7 +138,6 @@ export class Board {
         }
     }
 
-
     generateGuns() {
         //création random des armes
         for (let i = 0; i < this.gunNumber; i++) {
@@ -145,7 +146,6 @@ export class Board {
                 i--;
             } else {
                 this.squareList[randomGunNumber].squareIdentification = "gunHere";
-
             }
         }
         //affichage des cases armées sans répétition de l'arme
@@ -179,6 +179,18 @@ export class Board {
                 this.context.fillRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
                 this.context.strokeStyle = "black";
                 this.context.strokeRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
+            } else if (this.squareList[i].squareIdentification === "gunHere") {
+                for (let j = 0; j < this.viewedGuns.length; j++) {
+                    if ((this.viewedGuns[j].X === this.squareList[i].X) && (this.viewedGuns[j].Y === this.squareList[i].Y)) {
+                        let gunImage = new Image();
+                        gunImage.src = this.viewedGuns[j].image;
+                        gunImage.addEventListener('load', () => {
+                            this.context.drawImage(gunImage, this.squareList[i].X, this.squareList[i].Y);
+                        }, false);
+                        this.context.strokeStyle = "black";
+                        this.context.strokeRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
+                    }
+                }
             }
         }
     }

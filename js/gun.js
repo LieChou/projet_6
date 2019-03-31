@@ -20,10 +20,18 @@ export class Gun {
             {
                 "name": "Galaxy Laser4",
                 "damage": 40,
-                "image": "../css/images/png/galaxyGun4.png"    
+                "image": "../css/images/png/galaxyGun4.png"
             }];
 
     }
+
+    //méthode pour changer d'arme
+    /*newGun() {
+        if (this.squareList[i] === "gunHere") {
+            let newGunCharacter =
+                this.character = (this.name, newGunCharacter, this.X, this.Y);
+        }
+    }*/
 
 };
 
