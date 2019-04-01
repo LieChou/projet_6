@@ -1,8 +1,6 @@
 import { GreySquare } from "./greySquare.js";
 import { Characters } from "./characters.js";
 import { Gun } from "./gun.js";
-import { CharacterManager } from "./characterManager.js";
-
 
 export class Board {
 
@@ -127,7 +125,7 @@ export class Board {
                 let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
                 let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
                 let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[i].X, this.squareList[i].Y);
-                const newCharacter = new CharacterManager(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[i].X, this.squareList[i].Y, idCharacter, this);
+                const newCharacter = new Characters(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[i].X, this.squareList[i].Y, idCharacter, this);
                 this.viewedCharacters.push(newCharacter);
                 let characterImage = new Image();
                 characterImage.src = newCharacter.image;

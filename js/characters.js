@@ -8,7 +8,6 @@ export class Characters {
         this.X = X;
         this.Y = Y;
         this.idCharacter = idCharacter;
-        this.play = false;
         this.countMove = 0;
         this.board = board;
         this.maxHeight = this.board.maxHeight;
@@ -18,20 +17,43 @@ export class Characters {
         this.firstY;
     }
 
+    startTurn() {
+        this.firstX = this.X;
+        this.firstY = this.Y;
+        this.drawPath();
+        this.countMove = 0;
+    }
+
+    checkLeftSquare() {
+        return (this.X > this.firstX - 180) && (this.Y === this.firstY);
+    }
+
+    checkRightSquare() {
+        return (this.X < this.firstX + 180) && (this.Y === this.firstY);
+    }
+
+    checkUpSquare() {
+        return (this.Y > this.firstY - 180) && (this.X === this.firstX);
+    }
+
+    checkDownSquare() {
+        return (this.Y < this.firstY + 180) && (this.X === this.firstX);
+    }
+
     checkGreySquaresRight() {
-        return this.board.greySquares.filter(square => square.X !== this.X + this.board.squareSize && square.Y !== this.Y) !== null;
+        return this.board.greySquares.filter(square => square.X === this.X + this.board.squareSize && square.Y === this.Y).length === 0;
     }
 
     checkGreySquaresLeft() {
-        return this.board.greySquares.filter(square => square.X !== this.X - this.board.squareSize && square.Y !== this.Y) !== null;
+        return this.board.greySquares.filter(square => square.X === this.X - this.board.squareSize && square.Y === this.Y).length === 0;
     }
 
     checkGreySquaresUp() {
-        return this.board.greySquares.filter(square => square.Y !== this.Y - this.board.squareSize && square.X !== this.X) !== null;
+        return this.board.greySquares.filter(square => square.Y === this.Y - this.board.squareSize && square.X === this.X).length === 0;
     }
 
     checkGreySquaresDown() {
-        return this.board.greySquares.filter(square => square.Y !== this.Y + this.board.squareSize && square.X !== this.X) !== null;
+        return this.board.greySquares.filter(square => square.Y === this.Y + this.board.squareSize && square.X === this.X).length === 0;
     }
 
     moveLeft() {
@@ -101,11 +123,35 @@ export class Characters {
         }, false);
     }
 
+    drawPath() {
+        this.X = this.X;
+        this.Y = this.Y;
+        this.board.context.fillStyle = "grey";
+        this.board.context.fillRect(this.X - 60, this.Y, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X - 120, this.Y, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X - 180, this.Y, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X + 60, this.Y, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X + 120, this.Y, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X + 180, this.Y, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X, this.Y - 60, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X, this.Y - 120, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X, this.Y - 180, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X, this.Y + 60, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X, this.Y + 120, this.board.squareSize, this.board.squareSize);
+        this.board.context.fillRect(this.X, this.Y + 180, this.board.squareSize, this.board.squareSize);
+    }
+
+    countCharacterMove() {
+        this.countMove++;
+    }
+
+    getCountMove() {
+        return this.countMove;
+    }
+
     //méthode pour se défendre 
 
     // méthode pour attaquer
-
-
 
 }
 
