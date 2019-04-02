@@ -183,6 +183,8 @@ export class Board {
             } else if (this.squareList[i].squareIdentification === "gunHere") {
                 for (let j = 0; j < this.viewedGuns.length; j++) {
                     if ((this.viewedGuns[j].X === this.squareList[i].X) && (this.viewedGuns[j].Y === this.squareList[i].Y)) {
+                        this.context.fillStyle = "white";
+                        this.context.fillRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
                         let gunImage = new Image();
                         gunImage.src = this.viewedGuns[j].image;
                         gunImage.addEventListener('load', () => {
