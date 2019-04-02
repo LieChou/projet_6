@@ -1,5 +1,3 @@
-import { Board } from "./board.js";
-
 export class CharacterManager {
 
     constructor(characters) {

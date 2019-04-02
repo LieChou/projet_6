@@ -22,6 +22,27 @@ export class Characters {
         this.firstY = this.Y;
         this.drawPath();
         this.countMove = 0;
+        this.characterRepaint();
+    }
+
+    getX() {
+        return this.X;
+    }
+
+    getY() {
+        return this.Y;
+    }
+
+    getImage() {
+        return this.image;
+    }
+
+    characterRepaint() {
+        let characterImage = new Image();
+        characterImage.src = this.image;
+        characterImage.addEventListener('load', () => {
+            this.board.context.drawImage(characterImage, this.X, this.Y);
+        }, false);
     }
 
     checkLeftSquare() {

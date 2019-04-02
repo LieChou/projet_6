@@ -9,8 +9,6 @@ const galaxyBoard = new Board(600, 600, 0, 0, 10);
 galaxyBoard.generateBoard();
 galaxyBoard.generateGreySquare();
 galaxyBoard.generateGuns();
-console.log(galaxyBoard.viewedGuns);
-
 
 //création des character1 and ch2
 galaxyBoard.generateCharacters();
@@ -19,13 +17,15 @@ galaxyBoard.generateCharacters();
 let characterManager = new CharacterManager(galaxyBoard.viewedCharacters);
 let character = characterManager.getCharacter();
 
-//let player;
-//on fait toujours commencer le character1 (placé de tout de manière en random dans le tableau viewedCharacters)
 character.startTurn();
 
 document.onkeyup = function (e) {
     let key = e.keyCode || e.which;
     character = characterManager.getCharacter();
+    console.log(character.getX());
+    console.log(character.getY());
+    //console.log(galaxyBoard.squareList);
+    console.log(character.getImage());
     switch (key) {
         case 37: //gauche 
             if ((character.X >= galaxyBoard.squareSize) && (character.checkGreySquaresLeft()) && character.checkLeftSquare()) {
@@ -42,7 +42,6 @@ document.onkeyup = function (e) {
                 character.moveRight();
                 character.countCharacterMove();
                 if (character.getCountMove() >= 3) {
-                    //console.log(character.countMove);
                     galaxyBoard.repaint();
                     characterManager.switchCharacter();
                 };
@@ -53,7 +52,6 @@ document.onkeyup = function (e) {
                 character.moveUp();
                 character.countCharacterMove();
                 if (character.getCountMove() >= 3) {
-                    //console.log(character.countMove);
                     galaxyBoard.repaint();
                     characterManager.switchCharacter();
                 };
@@ -64,7 +62,6 @@ document.onkeyup = function (e) {
                 character.moveDown();
                 character.countCharacterMove();
                 if (character.getCountMove() >= 3) {
-                    //console.log(character.countMove);
                     galaxyBoard.repaint();
                     characterManager.switchCharacter();
                 };
@@ -75,4 +72,4 @@ document.onkeyup = function (e) {
     }
 }
 
-//isNextCharacter()
+

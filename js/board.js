@@ -79,6 +79,9 @@ export class Board {
         }
     }
 
+    getSquareLIst() {
+        return this.squareList;
+    }
     generateGreySquare() {
         //création random des cases grisées
         for (let i = 0; i < this.greySquareNumber; i++) {
