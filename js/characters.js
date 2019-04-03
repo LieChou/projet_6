@@ -165,8 +165,7 @@ export class Characters {
         for (let i = 0; i < this.board.viewedGuns.length; i++) {
             if ((this.board.viewedGuns[i].X === this.X) && (this.board.viewedGuns[i].Y === this.Y)) {
                 //on attribue le gun de la case
-                let gun = this.board.viewedGuns[i];
-                this.gun = gun;
+                this.gun = this.board.viewedGuns[i];
                 //on change l'identification du gun pour ne pas le recharger lors de l'appel de la fonction repaint()
                 for (let j = 0; j < this.board.squareNumber; j++) {
                     if ((this.board.viewedGuns[i].X === this.board.squareList[j].X) && (this.board.viewedGuns[i].Y === this.board.squareList[j].Y)) {

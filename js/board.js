@@ -53,6 +53,10 @@ export class Board {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
         this.newGun = {};
+        this.generateBoard();
+        this.generateGreySquare();
+        this.generateGuns();
+        this.generateCharacters();
     }
 
     generateBoard() {
@@ -79,9 +83,6 @@ export class Board {
         }
     }
 
-    getSquareLIst() {
-        return this.squareList;
-    }
     generateGreySquare() {
         //création random des cases grisées
         for (let i = 0; i < this.greySquareNumber; i++) {
@@ -118,23 +119,24 @@ export class Board {
                 i--; //on relance si le perso créé est à côté d'un autre perso
             } else {
                 this.squareList[randomCharacterNumber].squareIdentification = "characterHere";
+                let idCharacter = this.squareList[i].id;//récupérer l'id de la case sur laquelle on va générer le perso et passage au constructeur de la classe character sous forme idCharacter;
+                //console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
+                let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
+                let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
+                let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
+                const newCharacter = new Characters(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y, idCharacter, this);
+                this.viewedCharacters.push(newCharacter);
+                let characterImage = new Image();
+                characterImage.src = newCharacter.image;
+                characterImage.addEventListener('load', () => {
+                    this.context.drawImage(characterImage, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
+                }, false);
             }
         }
         //création des objets personnages sans répétition de ce dernier : une case = un personnage
         for (let i = 0; i < this.squareNumber; i++) {
             if (this.squareList[i].squareIdentification === "characterHere") {
-                let idCharacter = this.squareList[i].id;//récupérer l'id de la case sur laquelle on va générer le perso et passage au constructeur de la classe character sous forme idCharacter;
-                console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
-                let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
-                let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
-                let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[i].X, this.squareList[i].Y);
-                const newCharacter = new Characters(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[i].X, this.squareList[i].Y, idCharacter, this);
-                this.viewedCharacters.push(newCharacter);
-                let characterImage = new Image();
-                characterImage.src = newCharacter.image;
-                characterImage.addEventListener('load', () => {
-                    this.context.drawImage(characterImage, this.squareList[i].X, this.squareList[i].Y);
-                }, false);
+                this.squareList[i].squareIdentification = "emptySquare"
             }
         }
     }
