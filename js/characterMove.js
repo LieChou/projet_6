@@ -16,9 +16,11 @@ export class CharacterMove {
                     character.moveLeft();
                     character.countCharacterMove();
                     character.changeGun();
+                    console.log(character);
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
                         this.characterManager.switchCharacter();
+                        console.log(character);
                     };
                 };
                 break;

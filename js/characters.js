@@ -36,6 +36,8 @@ export class Characters {
     characterRepaint() {
         this.board.context.fillStyle = "white";
         this.board.context.fillRect(this.X, this.Y, this.board.squareSize, this.board.squareSize);
+        this.board.context.strokeStyle = "black";
+        this.board.context.strokeRect(this.X, this.Y, this.board.squareSize, this.board.squareSize);
         let characterImage = new Image();
         characterImage.src = this.image;
         characterImage.addEventListener('load', () => {
