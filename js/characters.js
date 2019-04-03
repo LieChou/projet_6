@@ -25,16 +25,12 @@ export class Characters {
         this.characterRepaint();
     }
 
-    getX() {
-        return this.X;
+    countCharacterMove() {
+        this.countMove++;
     }
 
-    getY() {
-        return this.Y;
-    }
-
-    getImage() {
-        return this.image;
+    getCountMove() {
+        return this.countMove;
     }
 
     characterRepaint() {
@@ -164,12 +160,21 @@ export class Characters {
         this.board.context.fillRect(this.X, this.Y + 180, this.board.squareSize, this.board.squareSize);
     }
 
-    countCharacterMove() {
-        this.countMove++;
-    }
-
-    getCountMove() {
-        return this.countMove;
+    //méthode pour changer d'arme 
+    changeGun() {
+        for (let i = 0; i < this.board.viewedGuns.length; i++) {
+            if ((this.board.viewedGuns[i].X === this.X) && (this.board.viewedGuns[i].Y === this.Y)) {
+                //on attribue le gun de la case
+                let gun = this.board.viewedGuns[i];
+                this.gun = gun;
+                //on change l'identification du gun pour ne pas le recharger lors de l'appel de la fonction repaint()
+                for (let j = 0; j < this.board.squareNumber; j++) {
+                    if ((this.board.viewedGuns[i].X === this.board.squareList[j].X) && (this.board.viewedGuns[i].Y === this.board.squareList[j].Y)) {
+                        this.board.squareList[j].squareIdentification = "emptySquare";
+                    }
+                }
+            }
+        }
     }
 
     //méthode pour se défendre 

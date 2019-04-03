@@ -25,14 +25,6 @@ export class Gun {
 
     }
 
-    //méthode pour changer d'arme
-    /*newGun() {
-        if (this.squareList[i] === "gunHere") {
-            let newGunCharacter =
-                this.character = (this.name, newGunCharacter, this.X, this.Y);
-        }
-    }*/
-
 };
 
 

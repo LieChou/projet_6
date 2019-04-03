@@ -12,25 +12,22 @@ galaxyBoard.generateGuns();
 
 //création des character1 and ch2
 galaxyBoard.generateCharacters();
-
+console.log(galaxyBoard.viewedGuns);
 
 let characterManager = new CharacterManager(galaxyBoard.viewedCharacters);
 let character = characterManager.getCharacter();
 
 character.startTurn();
-
+console.log(character);
 document.onkeyup = function (e) {
     let key = e.keyCode || e.which;
     character = characterManager.getCharacter();
-    console.log(character.getX());
-    console.log(character.getY());
-    //console.log(galaxyBoard.squareList);
-    console.log(character.getImage());
     switch (key) {
         case 37: //gauche 
             if ((character.X >= galaxyBoard.squareSize) && (character.checkGreySquaresLeft()) && character.checkLeftSquare()) {
                 character.moveLeft();
                 character.countCharacterMove();
+                character.changeGun();
                 if (character.getCountMove() >= 3) {
                     galaxyBoard.repaint();
                     characterManager.switchCharacter();
@@ -41,6 +38,7 @@ document.onkeyup = function (e) {
             if ((character.X <= galaxyBoard.maxWidth - galaxyBoard.squareSize) && (character.checkGreySquaresRight()) && character.checkRightSquare()) {
                 character.moveRight();
                 character.countCharacterMove();
+                character.changeGun();
                 if (character.getCountMove() >= 3) {
                     galaxyBoard.repaint();
                     characterManager.switchCharacter();
@@ -51,6 +49,7 @@ document.onkeyup = function (e) {
             if ((character.Y >= galaxyBoard.squareSize) && (character.checkGreySquaresUp()) && character.checkUpSquare()) {
                 character.moveUp();
                 character.countCharacterMove();
+                character.changeGun();
                 if (character.getCountMove() >= 3) {
                     galaxyBoard.repaint();
                     characterManager.switchCharacter();
@@ -61,6 +60,7 @@ document.onkeyup = function (e) {
             if ((character.Y <= galaxyBoard.maxHeight - galaxyBoard.squareSize) && (character.checkGreySquaresDown()) && character.checkDownSquare()) {
                 character.moveDown();
                 character.countCharacterMove();
+                character.changeGun();
                 if (character.getCountMove() >= 3) {
                     galaxyBoard.repaint();
                     characterManager.switchCharacter();
