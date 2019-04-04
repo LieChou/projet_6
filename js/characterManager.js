@@ -18,5 +18,6 @@ export class CharacterManager {
         this.currentCharacter.startTurn();
     }
 
+    //switchPlayer()? 
 
 }

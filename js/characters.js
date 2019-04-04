@@ -17,6 +17,20 @@ export class Characters {
         this.firstY;
     }
 
+    updateInfo() {
+        if (this.name === "Valentina") {
+            $('#ch1Life').html(this.life);
+            $('#ch1Gun').html(this.gun.name);
+            $('#ch1GunDamage').html(this.gun.damage);
+            $('#ch1GunImage').attr('src', this.gun.image);
+        } else if (this.name === "Alien") {
+            $('#ch2Life').html(this.life);
+            $('#ch2Gun').html(this.gun.name);
+            $('#ch2GunDamage').html(this.gun.damage);
+            $('#ch2GunImage').attr('src', this.gun.image);
+        }
+    }
+
     startTurn() {
         this.firstX = this.X;
         this.firstY = this.Y;
@@ -178,9 +192,36 @@ export class Characters {
         }
     }
 
-    //méthode pour se défendre 
+    //méthode pour initier un combat 
+    initFight() {
+        for (let i = 0; i < this.board.viewedCharacters.length; i++) {
+            if (((this.X - this.board.squareSize === this.board.viewedCharacters[i].X) && (this.Y === this.board.viewedCharacters[i].Y)) ||
+                ((this.X + this.board.squareSize === this.board.viewedCharacters[i].X) && (this.Y === this.board.viewedCharacters[i].Y)) ||
+                ((this.Y - this.board.squareSize === this.board.viewedCharacters[i].Y) && (this.X === this.board.viewedCharacters[i].X)) ||
+                ((this.Y + this.board.squareSize === this.board.viewedCharacters[i].Y) && (this.X === this.board.viewedCharacters[i].X))) {
+                alert("Le combat peut démarrer, le personnage " + this.name + " va commencer");
+                this.fight();
+            }
+        }
+    }
 
-    // méthode pour attaquer
+    //méthode pour se battre fight() if fight then if addEventLIstener (click attaquer then ;;; if click on defendre then) + jquery
+    fight() {
+        let gameValue = prompt("Tapez 1 pour attaquer ou 0 pour vous défendre au prochain coup");
+        if (gameValue === 1) {
+            this.attack();
+        } else if (gameValue === 0) {
+            this.defend();
+        }
+    }
+
+    //méthode pour attaquer
+    attack() {
+        //if this.life>0 et competitor.life > 0 then on peut jouer
+
+    }
+
+    //méthode pour se défendre au tour suivant
 
 }
 

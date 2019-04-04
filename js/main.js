@@ -8,3 +8,4 @@ document.onkeyup = function (e) {
 }
 
 
+console.log(characterMove.characterManager.characters);

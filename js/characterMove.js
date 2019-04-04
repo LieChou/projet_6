@@ -6,6 +6,7 @@ export class CharacterMove {
         this.galaxyBoard = new Board(600, 600, 0, 0, 10);
         this.characterManager = new CharacterManager(this.galaxyBoard.viewedCharacters);
         this.characterManager.getCharacter().startTurn();
+        this.characterManager.getCharacter().updateInfo();
     }
 
     move(key) {
@@ -16,11 +17,11 @@ export class CharacterMove {
                     character.moveLeft();
                     character.countCharacterMove();
                     character.changeGun();
-                    console.log(character);
+                    character.updateInfo();
+                    character.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
                         this.characterManager.switchCharacter();
-                        console.log(character);
                     };
                 };
                 break;
@@ -29,6 +30,8 @@ export class CharacterMove {
                     character.moveRight();
                     character.countCharacterMove();
                     character.changeGun();
+                    character.updateInfo();
+                    character.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
                         this.characterManager.switchCharacter();
@@ -40,6 +43,8 @@ export class CharacterMove {
                     character.moveUp();
                     character.countCharacterMove();
                     character.changeGun();
+                    character.updateInfo();
+                    character.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
                         this.characterManager.switchCharacter();
@@ -51,6 +56,8 @@ export class CharacterMove {
                     character.moveDown();
                     character.countCharacterMove();
                     character.changeGun();
+                    character.updateInfo();
+                    character.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
                         this.characterManager.switchCharacter();
@@ -59,6 +66,9 @@ export class CharacterMove {
                 break;
             case 13: //enter (si on ne veut pas attendre de pacourir les 3 cases)
                 if (character.getCountMove() >= 1) {
+                    character.changeGun();
+                    character.updateInfo();
+                    character.initFight();
                     this.galaxyBoard.repaint();
                     this.characterManager.getCharacter().characterRepaint();
                     this.characterManager.switchCharacter();

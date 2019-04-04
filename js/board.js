@@ -115,12 +115,18 @@ export class Board {
             let randomCharacterNumber = Math.floor(Math.random() * (this.squareNumber - 1));
             if (this.squareList[randomCharacterNumber].squareIdentification !== "emptySquare") {
                 i--;
-            } else if ((this.squareList[randomCharacterNumber].squareIdentification === "emptySquare") && ((this.squareList[randomCharacterNumber - 1].squareIdentification === "characterHere") || (this.squareList[randomCharacterNumber + 1].squareIdentification === "characterHere"))) {
-                i--; //on relance si le perso créé est à côté d'un autre perso
+            } else if ((this.viewedCharacters.length > 0) && (
+                ((this.squareList[randomCharacterNumber].X - this.squareSize === this.viewedCharacters[0].X) && (this.squareList[randomCharacterNumber].Y === this.viewedCharacters[0].Y)) ||
+                ((this.squareList[randomCharacterNumber].X + this.squareSize === this.viewedCharacters[0].X) && (this.squareList[randomCharacterNumber].Y === this.viewedCharacters[0].Y)) ||
+                ((this.squareList[randomCharacterNumber].Y + this.squareSize === this.viewedCharacters[0].Y) && (this.squareList[randomCharacterNumber].X === this.viewedCharacters[0].X)) ||
+                ((this.squareList[randomCharacterNumber].Y - this.squareSize === this.viewedCharacters[0].Y) && (this.squareList[randomCharacterNumber].X === this.viewedCharacters[0].X))
+            )) {
+                i--; //on relance si le perso créé est à côté de l'autre perso déjà créé
             } else {
                 this.squareList[randomCharacterNumber].squareIdentification = "characterHere";
                 let idCharacter = this.squareList[i].id;//récupérer l'id de la case sur laquelle on va générer le perso et passage au constructeur de la classe character sous forme idCharacter;
-                //console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
+
+                //création des objets personnages sans répétition de ce dernier : une case = un personnage
                 let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
                 let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
                 let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
@@ -132,8 +138,9 @@ export class Board {
                     this.context.drawImage(characterImage, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
                 }, false);
             }
-        }
-        //création des objets personnages sans répétition de ce dernier : une case = un personnage
+        } console.log(this.viewedCharacters)
+
+        // retrait du l'identification character pour simplifier le repaint
         for (let i = 0; i < this.squareNumber; i++) {
             if (this.squareList[i].squareIdentification === "characterHere") {
                 this.squareList[i].squareIdentification = "emptySquare"
