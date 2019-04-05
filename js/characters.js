@@ -19,6 +19,7 @@ export class Characters {
 
     updateInfo() {
         if (this.name === "Valentina") {
+            console.log('DEFEND OK')
             $('#ch1Life').html(this.life);
             $('#ch1Gun').html(this.gun.name);
             $('#ch1GunDamage').html(this.gun.damage);
@@ -28,6 +29,22 @@ export class Characters {
             $('#ch2Gun').html(this.gun.name);
             $('#ch2GunDamage').html(this.gun.damage);
             $('#ch2GunImage').attr('src', this.gun.image);
+        }
+    }
+
+    updateCompetitorInfo(competitor) {
+        if (competitor.name === "Valentina") {
+            console.log('ATTACK OK')
+            $('#ch1Life').html(competitor.life);
+            console.log($('#ch1Life').html(competitor.life));
+            $('#ch1Gun').html(competitor.gun.name);
+            $('#ch1GunDamage').html(competitor.gun.damage);
+            $('#ch1GunImage').attr('src', competitor.gun.image);
+        } else if (competitor.name === "Alien") {
+            $('#ch2Life').html(competitor.life);
+            $('#ch2Gun').html(competitor.gun.name);
+            $('#ch2GunDamage').html(competitor.gun.damage);
+            $('#ch2GunImage').attr('src', competitor.gun.image);
         }
     }
 
@@ -192,36 +209,31 @@ export class Characters {
         }
     }
 
-    //méthode pour initier un combat 
-    initFight() {
-        for (let i = 0; i < this.board.viewedCharacters.length; i++) {
-            if (((this.X - this.board.squareSize === this.board.viewedCharacters[i].X) && (this.Y === this.board.viewedCharacters[i].Y)) ||
-                ((this.X + this.board.squareSize === this.board.viewedCharacters[i].X) && (this.Y === this.board.viewedCharacters[i].Y)) ||
-                ((this.Y - this.board.squareSize === this.board.viewedCharacters[i].Y) && (this.X === this.board.viewedCharacters[i].X)) ||
-                ((this.Y + this.board.squareSize === this.board.viewedCharacters[i].Y) && (this.X === this.board.viewedCharacters[i].X))) {
-                alert("Le combat peut démarrer, le personnage " + this.name + " va commencer");
-                this.fight();
-            }
-        }
-    }
-
-    //méthode pour se battre fight() if fight then if addEventLIstener (click attaquer then ;;; if click on defendre then) + jquery
-    fight() {
-        let gameValue = prompt("Tapez 1 pour attaquer ou 0 pour vous défendre au prochain coup");
-        if (gameValue === 1) {
-            this.attack();
-        } else if (gameValue === 0) {
-            this.defend();
-        }
-    }
-
     //méthode pour attaquer
-    attack() {
-        //if this.life>0 et competitor.life > 0 then on peut jouer
+    attack(competitor) {
+        if (this.life > 0 && competitor.life > 0) { // on vérifie que les deux joueurs sont toujours en vie 
+            competitor.life = competitor.life - this.gun.damage;
+            this.updateCompetitorInfo(competitor);
+            alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage + ' points de vie!');
+        }
 
+        if (competitor.life <= 0) {
+            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort, la partie est terminée !');
+            alert('Voulez-vous relancer une nouvelle partie ? '); //***ajouter un reloard du jeu ici***;
+        }
     }
 
-    //méthode pour se défendre au tour suivant
+    //méthode pour se défendre 
+    defend(competitor) {
+        if (this.life > 0 && competitor.life > 0) { // on vérifie que les deux joueurs sont toujours en vie 
+            this.life = this.life - competitor.gun.damage / 2;
+            this.updateInfo();
+            alert(this.name + ' s\'est défendu contre ' + competitor.name + ' et n\'a encaissé que ' + competitor.gun.damage / 2 + ' points de dégat');
+        }
 
+        if (competitor.life <= 0) {
+            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort, la partie est terminée ! ');
+            alert('Voulez-vous relancer une nouvelle partie ? '); //***ajouter un reloard du jeu ici***;
+        }
+    }
 }
-

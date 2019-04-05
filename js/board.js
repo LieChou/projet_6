@@ -138,7 +138,7 @@ export class Board {
                     this.context.drawImage(characterImage, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
                 }, false);
             }
-        } console.log(this.viewedCharacters)
+        }
 
         // retrait du l'identification character pour simplifier le repaint
         for (let i = 0; i < this.squareNumber; i++) {

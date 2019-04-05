@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
@@ -30,12 +29,12 @@
             <div class="col" id="character1">
                 <h3>Personnage 1</h3>
                 <li>Prénom, Nom:<br />
-                    <p id="ch1">Valentina</p><br /><img id="ch1Image" src="../css/images/png/astronaut.png"></img>
+                    <p id="ch1">Valentina</p><img id="ch1Image" src="../css/images/png/astronaut.png"></img>
                 </li>
                 <li>Vie en cours:<br />
                     <p id="ch1Life"></p> / 100
                 </li>
-                <li>Arme utilisée: <p id="ch1Gun"></p><br /><img id="ch1GunImage"
+                <li>Arme utilisée: <p id="ch1Gun"></p><img id="ch1GunImage"
                         src="../css/images/png/galaxyGun1.png"></img>
                 </li>
                 <li>Dégâts infligés: <p id="ch1GunDamage"></p><br />
@@ -50,12 +49,12 @@
             <div class="col" id="character2">
                 <h3>Personnage 2</h3>
                 <li>Prénom, Nom:<br />
-                    <p id="ch2">Alien</p><br /><img id="ch2Image" src="../css/images/png/alien.png"></img>
+                    <p id="ch2">Alien</p><img id="ch2Image" src="../css/images/png/alien.png"></img>
                 </li>
                 <li>Vie en cours:<br />
                     <p id="ch2Life"></p> / 100
                 </li>
-                <li>Arme utilisée: <p id="ch2Gun"></p><br /><img id="ch2GunImage"
+                <li>Arme utilisée: <p id="ch2Gun"></p><img id="ch2GunImage"
                         src="../css/images/png/galaxyGun1.png"></img></li>
                 <li>Dégâts infligés: <p id="ch2GunDamage"></p><br />
                 </li>
@@ -63,10 +62,12 @@
         </div>
     </div>
 
+
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/board.js"></script>
     <script type="module" src="js/greySquare.js"></script>
-    <script type="module" src="js/characters.js"></script>
+    <script type="module" src="js/characters.js">
+    </script>
     <script type="module" src="js/characterManager.js"></script>
     <script type="module" src="js/characterMove.js"></script>
     <script type="module" src="js/gun.js"></script>
