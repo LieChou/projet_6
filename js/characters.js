@@ -20,6 +20,8 @@ export class Characters {
     updateInfo() {
         if (this.name === "Valentina") {
             console.log('DEFEND OK')
+            console.log(this);
+
             $('#ch1Life').html(this.life);
             $('#ch1Gun').html(this.gun.name);
             $('#ch1GunDamage').html(this.gun.damage);
@@ -197,22 +199,64 @@ export class Characters {
     changeGun() {
         for (let i = 0; i < this.board.viewedGuns.length; i++) {
             if ((this.board.viewedGuns[i].X === this.X) && (this.board.viewedGuns[i].Y === this.Y)) {
-                //on attribue le gun de la case
-                this.gun = this.board.viewedGuns[i];
+                //on mets les coordoonees du gun
+                this.gun.X = this.X;
+                this.gun.Y = this.Y;
+                //on remet l'image
+                let gunImage = new Image();
+                gunImage.src = this.gun.image;
+                gunImage.addEventListener('load', () => {
+                    this.board.context.drawImage(gunImage, this.X, this.Y);
+                }, false);
+                //on permutte les deux variables
+                [this.gun, this.board.viewedGuns[i]] = [this.board.viewedGuns[i], this.gun];
+                //this.updateGunImage();
                 //on change l'identification du gun pour ne pas le recharger lors de l'appel de la fonction repaint()
-                for (let j = 0; j < this.board.squareNumber; j++) {
+                /*for (let j = 0; j < this.board.squareNumber; j++) {
                     if ((this.board.viewedGuns[i].X === this.board.squareList[j].X) && (this.board.viewedGuns[i].Y === this.board.squareList[j].Y)) {
                         this.board.squareList[j].squareIdentification = "emptySquare";
                     }
-                }
+                }*/
             }
         }
     }
+
+    //méthode pour afficher l'arme déposée par le jouer
+    /*updateGunImage() {
+        for (let i = 0; i < this.board.viewedGuns.length; i++) {
+            if (this.board.viewedGuns[i].name === "Galaxy Laser1") {
+                let gunImage = new Image();
+                gunImage.src = this.board.viewedGuns[i].image;
+                gunImage.addEventListener('load', () => {
+                    this.board.context.drawImage(gunImage, this.X, this.Y);
+                }, false);
+            } else if (this.board.viewedGuns[i].name === "Galaxy Laser2") {
+                let gunImage = new Image();
+                gunImage.src = this.board.viewedGuns[i].image;
+                gunImage.addEventListener('load', () => {
+                    this.board.context.drawImage(gunImage, this.X, this.Y);
+                }, false);
+            } else if (this.board.viewedGuns[i].name === "Galaxy Laser3") {
+                let gunImage = new Image();
+                gunImage.src = this.board.viewedGuns[i].image;
+                gunImage.addEventListener('load', () => {
+                    this.board.context.drawImage(gunImage, this.X, this.Y);
+                }, false);
+            } else if (this.board.viewedGuns[i].name === "Galaxy Laser4") {
+                let gunImage = new Image();
+                gunImage.src = this.board.viewedGuns[i].image;
+                gunImage.addEventListener('load', () => {
+                    this.board.context.drawImage(gunImage, this.X, this.Y);
+                }, false);
+            }
+        }
+    }*/
 
     //méthode pour attaquer
     attack(competitor) {
         if (this.life > 0 && competitor.life > 0) { // on vérifie que les deux joueurs sont toujours en vie 
             competitor.life = competitor.life - this.gun.damage;
+            //competitor.updateInfo();
             this.updateCompetitorInfo(competitor);
             alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage + ' points de vie!');
         }

@@ -21,6 +21,7 @@ export class CharacterMove {
                     this.characterManager.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
+                        //character.updateGunImage();
                         this.characterManager.switchCharacter();
                     };
                 };
@@ -34,6 +35,7 @@ export class CharacterMove {
                     this.characterManager.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
+                        //character.updateGunImage();
                         this.characterManager.switchCharacter();
                     };
                 };
@@ -47,6 +49,7 @@ export class CharacterMove {
                     this.characterManager.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
+                        //character.updateGunImage();
                         this.characterManager.switchCharacter();
                     };
                 };
@@ -60,6 +63,7 @@ export class CharacterMove {
                     this.characterManager.initFight();
                     if (character.getCountMove() >= 3) {
                         this.galaxyBoard.repaint();
+                        //character.updateGunImage();
                         this.characterManager.switchCharacter();
                     };
                 };
@@ -71,6 +75,7 @@ export class CharacterMove {
                     this.characterManager.initFight();
                     this.galaxyBoard.repaint();
                     this.characterManager.getCharacter().characterRepaint();
+                    //character.updateGunImage();
                     this.characterManager.switchCharacter();
                 }
                 break;

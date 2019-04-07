@@ -37,4 +37,8 @@ body{
     border-style: dotted;
 }
 
-
+#gunInfo {
+    color : white;
+    text-align: center;
+    font-family: fantasy;
+}

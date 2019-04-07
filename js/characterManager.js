@@ -56,7 +56,11 @@ export class CharacterManager {
             character.defend(competitor);
         }
         this.switchPlayer();
-        this.fight();
+        let m = this;
+        $(function () {
+            m.fight();
+        }
+        );
     }
 
 
