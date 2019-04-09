@@ -19,9 +19,6 @@ export class Characters {
 
     updateInfo() {
         if (this.name === "Valentina") {
-            console.log('DEFEND OK')
-            console.log(this);
-
             $('#ch1Life').html(this.life);
             $('#ch1Gun').html(this.gun.name);
             $('#ch1GunDamage').html(this.gun.damage);
@@ -36,9 +33,7 @@ export class Characters {
 
     updateCompetitorInfo(competitor) {
         if (competitor.name === "Valentina") {
-            console.log('ATTACK OK')
             $('#ch1Life').html(competitor.life);
-            console.log($('#ch1Life').html(competitor.life));
             $('#ch1Gun').html(competitor.gun.name);
             $('#ch1GunDamage').html(competitor.gun.damage);
             $('#ch1GunImage').attr('src', competitor.gun.image);
@@ -111,17 +106,17 @@ export class Characters {
     }
 
     moveLeft() {
-        //on commence par effacer la case actuelle 
+        //clear current square
         this.board.context.clearRect(this.X, this.Y, this.squareSize, this.squareSize);
-        //on remet le fond blanc et les cases grises
+        //add white background and strokeStyle
         let coordX = this.X;
         this.board.context.fillStyle = "white";
         this.board.context.fillRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
-        //on enregistre les nouvelles coordonnées pour le déplacement
+        //registering current coordinates to help moving character
         this.X = coordX - this.squareSize;
-        //on créé l'image du personnage sur la nouvelle case
+        //image creation on the new coordinates
         let characterImage = new Image();
         characterImage.src = this.image;
         characterImage.addEventListener('load', () => {
@@ -136,7 +131,6 @@ export class Characters {
         this.board.context.fillRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
-        //this.board.context.save();
         this.X = coordX + this.squareSize;
         let characterImage = new Image();
         characterImage.src = this.image;
@@ -152,7 +146,6 @@ export class Characters {
         this.board.context.fillRect(this.X - 1, coordY - 1, this.squareSize, this.squareSize);
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(this.X - 1, coordY - 1, this.squareSize, this.squareSize);
-        //this.board.context.save();
         this.Y = coordY - this.squareSize;
         let characterImage = new Image();
         characterImage.src = this.image;
@@ -168,7 +161,6 @@ export class Characters {
         this.board.context.fillRect(this.X - 1, coordY - 1, this.board.squareSize, this.board.squareSize);
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(this.X - 1, coordY - 1, this.board.squareSize, this.board.squareSize);
-        //this.board.context.save();
         this.Y = coordY + this.squareSize;
         let characterImage = new Image();
         characterImage.src = this.image;
@@ -195,68 +187,33 @@ export class Characters {
         this.board.context.fillRect(this.X, this.Y + 180, this.board.squareSize, this.board.squareSize);
     }
 
-    //méthode pour changer d'arme 
     changeGun() {
         for (let i = 0; i < this.board.viewedGuns.length; i++) {
             if ((this.board.viewedGuns[i].X === this.X) && (this.board.viewedGuns[i].Y === this.Y)) {
-                //on mets les coordoonees du gun
+                //gun coordinates
                 this.gun.X = this.X;
                 this.gun.Y = this.Y;
-                //on remet l'image
+                //gun image creation
                 let gunImage = new Image();
                 gunImage.src = this.gun.image;
                 gunImage.addEventListener('load', () => {
                     this.board.context.drawImage(gunImage, this.X, this.Y);
                 }, false);
-                //on permutte les deux variables
+                //permutes both variables
                 [this.gun, this.board.viewedGuns[i]] = [this.board.viewedGuns[i], this.gun];
-                //this.updateGunImage();
-                //on change l'identification du gun pour ne pas le recharger lors de l'appel de la fonction repaint()
-                /*for (let j = 0; j < this.board.squareNumber; j++) {
-                    if ((this.board.viewedGuns[i].X === this.board.squareList[j].X) && (this.board.viewedGuns[i].Y === this.board.squareList[j].Y)) {
-                        this.board.squareList[j].squareIdentification = "emptySquare";
-                    }
-                }*/
             }
         }
     }
 
-    //méthode pour afficher l'arme déposée par le jouer
-    /*updateGunImage() {
-        for (let i = 0; i < this.board.viewedGuns.length; i++) {
-            if (this.board.viewedGuns[i].name === "Galaxy Laser1") {
-                let gunImage = new Image();
-                gunImage.src = this.board.viewedGuns[i].image;
-                gunImage.addEventListener('load', () => {
-                    this.board.context.drawImage(gunImage, this.X, this.Y);
-                }, false);
-            } else if (this.board.viewedGuns[i].name === "Galaxy Laser2") {
-                let gunImage = new Image();
-                gunImage.src = this.board.viewedGuns[i].image;
-                gunImage.addEventListener('load', () => {
-                    this.board.context.drawImage(gunImage, this.X, this.Y);
-                }, false);
-            } else if (this.board.viewedGuns[i].name === "Galaxy Laser3") {
-                let gunImage = new Image();
-                gunImage.src = this.board.viewedGuns[i].image;
-                gunImage.addEventListener('load', () => {
-                    this.board.context.drawImage(gunImage, this.X, this.Y);
-                }, false);
-            } else if (this.board.viewedGuns[i].name === "Galaxy Laser4") {
-                let gunImage = new Image();
-                gunImage.src = this.board.viewedGuns[i].image;
-                gunImage.addEventListener('load', () => {
-                    this.board.context.drawImage(gunImage, this.X, this.Y);
-                }, false);
-            }
-        }
-    }*/
+    characterMove() {
+        this.countCharacterMove();
+        this.updateInfo();
+        this.changeGun()
+    }
 
-    //méthode pour attaquer
     attack(competitor) {
-        if (this.life > 0 && competitor.life > 0) { // on vérifie que les deux joueurs sont toujours en vie 
+        if (this.life > 0 && competitor.life > 0) { // check both players are still alive
             competitor.life = competitor.life - this.gun.damage;
-            //competitor.updateInfo();
             this.updateCompetitorInfo(competitor);
             alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage + ' points de vie!');
         }
@@ -267,9 +224,8 @@ export class Characters {
         }
     }
 
-    //méthode pour se défendre 
     defend(competitor) {
-        if (this.life > 0 && competitor.life > 0) { // on vérifie que les deux joueurs sont toujours en vie 
+        if (this.life > 0 && competitor.life > 0) { // check both players are stille alive
             this.life = this.life - competitor.gun.damage / 2;
             this.updateInfo();
             alert(this.name + ' s\'est défendu contre ' + competitor.name + ' et n\'a encaissé que ' + competitor.gun.damage / 2 + ' points de dégat');

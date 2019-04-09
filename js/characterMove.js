@@ -12,75 +12,56 @@ export class CharacterMove {
     move(key) {
         let character = this.characterManager.getCharacter();
         switch (key) {
-            case 37: //gauche 
+            case 37: //left
                 if ((character.X >= this.galaxyBoard.squareSize) && (character.checkGreySquaresLeft()) && character.checkLeftSquare()) {
                     character.moveLeft();
-                    character.countCharacterMove();
-                    character.changeGun();
-                    character.updateInfo();
-                    this.characterManager.initFight();
-                    if (character.getCountMove() >= 3) {
-                        this.galaxyBoard.repaint();
-                        //character.updateGunImage();
-                        this.characterManager.switchCharacter();
-                    };
+                    this.afterMove();
                 };
                 break;
-            case 39: //droite
+            case 39: //right
                 if ((character.X <= this.galaxyBoard.maxWidth - this.galaxyBoard.squareSize) && (character.checkGreySquaresRight()) && character.checkRightSquare()) {
                     character.moveRight();
-                    character.countCharacterMove();
-                    character.changeGun();
-                    character.updateInfo();
-                    this.characterManager.initFight();
-                    if (character.getCountMove() >= 3) {
-                        this.galaxyBoard.repaint();
-                        //character.updateGunImage();
-                        this.characterManager.switchCharacter();
-                    };
+                    this.afterMove();
                 };
                 break;
-            case 38: //haut
+            case 38: //up
                 if ((character.Y >= this.galaxyBoard.squareSize) && (character.checkGreySquaresUp()) && character.checkUpSquare()) {
                     character.moveUp();
-                    character.countCharacterMove();
-                    character.changeGun();
-                    character.updateInfo();
-                    this.characterManager.initFight();
-                    if (character.getCountMove() >= 3) {
-                        this.galaxyBoard.repaint();
-                        //character.updateGunImage();
-                        this.characterManager.switchCharacter();
-                    };
+                    this.afterMove();
                 };
                 break;
-            case 40: //bas
+            case 40: //down
                 if ((character.Y <= this.galaxyBoard.maxHeight - this.galaxyBoard.squareSize) && (character.checkGreySquaresDown()) && character.checkDownSquare()) {
                     character.moveDown();
-                    character.countCharacterMove();
-                    character.changeGun();
-                    character.updateInfo();
-                    this.characterManager.initFight();
-                    if (character.getCountMove() >= 3) {
-                        this.galaxyBoard.repaint();
-                        //character.updateGunImage();
-                        this.characterManager.switchCharacter();
-                    };
+                    this.afterMove();
                 };
                 break;
-            case 13: //enter (si on ne veut pas attendre de pacourir les 3 cases)
+            case 13: //enter (if player wants to stop before 3 steps)
                 if (character.getCountMove() >= 1) {
-                    character.changeGun();
                     character.updateInfo();
                     this.characterManager.initFight();
                     this.galaxyBoard.repaint();
                     this.characterManager.getCharacter().characterRepaint();
-                    //character.updateGunImage();
                     this.characterManager.switchCharacter();
                 }
                 break;
             default:
                 alert('Votre personnage est bloqué');
         }
+    }
+
+    checkCountMove() {
+        let character = this.characterManager.getCharacter();
+        if (character.getCountMove() >= 3) {
+            this.galaxyBoard.repaint();
+            this.characterManager.switchCharacter();
+        };
+    }
+
+    afterMove() {
+        let character = this.characterManager.getCharacter();
+        character.characterMove()
+        this.characterManager.initFight();
+        this.checkCountMove();
     }
 }

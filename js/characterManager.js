@@ -6,18 +6,18 @@ export class CharacterManager {
         this.board = board;
     }
 
-    //méthode pour récupérer le personnage en cours
+    //function to get current character
     getCharacter() {
         return this.currentCharacter;
     }
 
-    //méthode pour se déplacer à tour de rôle
+    //function to move one after another
     switchCharacter() {
         this.currentCharacter = this.getCompetitor();
         this.currentCharacter.startTurn();
     }
 
-    //méthode pour récupérer l'adversaire
+    //function to get current competitor during fight
     getCompetitor() {
         if (this.currentCharacter === this.characters[0]) {
             return this.characters[1];
@@ -26,13 +26,13 @@ export class CharacterManager {
         }
     }
 
-    //méthode pour se battre à tour de rôle
+    //function to fight one after another
     switchPlayer() {
         this.currentCharacter = this.getCompetitor();
         alert('C\'est au tour de ' + this.currentCharacter.name + ' de jouer!');
     }
 
-    //méthode pour initier un combat 
+    //function to initiate a fight
     initFight() {
         for (let i = 0; i < this.characters.length; i++) {
             if (((this.currentCharacter.X - this.board.squareSize === this.characters[i].X) && (this.currentCharacter.Y === this.characters[i].Y)) ||
@@ -45,7 +45,7 @@ export class CharacterManager {
         }
     }
 
-    //méthode pour se battre 
+    //function to fight
     fight() {
         let gameValue = prompt('Tapez 1 pour attaquer ou 0 pour vous défendre');
         let character = this.currentCharacter;
@@ -56,9 +56,9 @@ export class CharacterManager {
             character.defend(competitor);
         }
         this.switchPlayer();
-        let m = this;
+        let c = this;
         $(function () {
-            m.fight();
+            c.fight();
         }
         );
     }
