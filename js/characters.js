@@ -19,11 +19,13 @@ export class Characters {
 
     updateInfo() {
         if (this.name === "Valentina") {
+            $('#squareCount1').html(this.countMove);
             $('#ch1Life').html(this.life);
             $('#ch1Gun').html(this.gun.name);
             $('#ch1GunDamage').html(this.gun.damage);
             $('#ch1GunImage').attr('src', this.gun.image);
         } else if (this.name === "Alien") {
+            $('#squareCount2').html(this.countMove);
             $('#ch2Life').html(this.life);
             $('#ch2Gun').html(this.gun.name);
             $('#ch2GunDamage').html(this.gun.damage);
@@ -33,11 +35,13 @@ export class Characters {
 
     updateCompetitorInfo(competitor) {
         if (competitor.name === "Valentina") {
+            $('#squareCount1').html(competitor.countMove);
             $('#ch1Life').html(competitor.life);
             $('#ch1Gun').html(competitor.gun.name);
             $('#ch1GunDamage').html(competitor.gun.damage);
             $('#ch1GunImage').attr('src', competitor.gun.image);
         } else if (competitor.name === "Alien") {
+            $('#squareCount2').html(competitor.countMove);
             $('#ch2Life').html(competitor.life);
             $('#ch2Gun').html(competitor.gun.name);
             $('#ch2GunDamage').html(competitor.gun.damage);
@@ -71,22 +75,6 @@ export class Characters {
         characterImage.addEventListener('load', () => {
             this.board.context.drawImage(characterImage, this.X, this.Y);
         }, false);
-    }
-
-    checkLeftSquare() {
-        return (this.X > this.firstX - 180) && (this.Y === this.firstY);
-    }
-
-    checkRightSquare() {
-        return (this.X < this.firstX + 180) && (this.Y === this.firstY);
-    }
-
-    checkUpSquare() {
-        return (this.Y > this.firstY - 180) && (this.X === this.firstX);
-    }
-
-    checkDownSquare() {
-        return (this.Y < this.firstY + 180) && (this.X === this.firstX);
     }
 
     checkGreySquaresRight() {
@@ -167,24 +155,6 @@ export class Characters {
         characterImage.addEventListener('load', () => {
             this.board.context.drawImage(characterImage, this.X, this.Y);
         }, false);
-    }
-
-    drawPath() {
-        this.X = this.X;
-        this.Y = this.Y;
-        this.board.context.fillStyle = "grey";
-        this.board.context.fillRect(this.X - 60, this.Y, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X - 120, this.Y, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X - 180, this.Y, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X + 60, this.Y, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X + 120, this.Y, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X + 180, this.Y, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X, this.Y - 60, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X, this.Y - 120, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X, this.Y - 180, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X, this.Y + 60, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X, this.Y + 120, this.board.squareSize, this.board.squareSize);
-        this.board.context.fillRect(this.X, this.Y + 180, this.board.squareSize, this.board.squareSize);
     }
 
     changeGun() {
