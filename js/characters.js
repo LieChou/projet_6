@@ -48,7 +48,7 @@ export class Characters {
     startTurn() {
         this.firstX = this.X;
         this.firstY = this.Y;
-        this.drawPath();
+        //this.drawPath();
         this.countMove = 0;
         this.characterRepaint();
     }
@@ -219,8 +219,9 @@ export class Characters {
         }
 
         if (competitor.life <= 0) {
-            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort, la partie est terminée !');
-            alert('Voulez-vous relancer une nouvelle partie ? '); //***ajouter un reloard du jeu ici***;
+            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort.e, la partie est terminée !');
+            $('#ambiance').trigger('pause');
+            $('#winnerSong').trigger('play');
         }
     }
 
@@ -232,8 +233,9 @@ export class Characters {
         }
 
         if (competitor.life <= 0) {
-            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort, la partie est terminée ! ');
-            alert('Voulez-vous relancer une nouvelle partie ? '); //***ajouter un reloard du jeu ici***;
+            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort.e, la partie est terminée ! ');
+            $('#ambiance').trigger('pause');
+            $('#winnerSong').trigger('play');
         }
     }
 }

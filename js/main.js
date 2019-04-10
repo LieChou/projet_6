@@ -2,9 +2,26 @@ import { CharacterMove } from "./characterMove.js";
 
 const characterMove = new CharacterMove();
 
-alert('***Bonjour et bienvenue sur le Galaxy Game**** Vous pouvez jouer à tour de rôle en vous déplaçant de 3 cases. Des armes sont disponibles sur le plateau, vous devez les ramasser pour gagner en puissance avant de vous affronter jusqu\'à ce que mort s\'en suive ! Que le meilleur gagne !');
 
-document.onkeyup = function (e) {
-    let key = e.keyCode || e.which;
-    characterMove.move(key);
-}
+$(function () {
+    $('#hideGunInfo').on('click', function () {
+        $('#gunInfo').hide(1000);
+    });
+    $('#showGunInfo').on('click', function () {
+        $('#gunInfo').show(1000);
+    });
+    $('#hideNotice').on('click', function () {
+        $('#noticeInfo').hide(1000);
+    });
+    $('#showNotice').on('click', function () {
+        $('#noticeInfo').show(1000);
+    });
+});
+
+$(document).on('keyup',
+    function (e) {
+        let key = e.keyCode || e.which;
+        characterMove.move(key);
+        //$('#ambiance').trigger('play');
+    }
+)

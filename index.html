@@ -22,10 +22,20 @@
 <body>
     <header>
         <h1>Galaxy Game</h1>
+        <audio controls id="ambiance" src="media/ambiance.mp3"></audio>
+        <audio id="winnerSong" src="media/winnerSong.mp3"></audio>
+
     </header>
 
+    <div class="container" id="noticeInfo">
+        <h1>Règles du jeu</h1>
+        <p>Bonjour et bienvenue sur le Galaxy Game**** Vous pouvez jouer à tour de rôle en vous déplaçant de 3 cases.
+            Des armes sont disponibles sur le plateau, vous devez les ramasser pour gagner en puissance avant de vous
+            affronter jusqu\'à ce que mort s\'en suive ! Que le meilleur gagne !
+        </p>
+    </div>
     <div class="container" id="gunInfo">
-        <h1>Armes actuellement disponibles sur le plateau</h1>
+        <h1>Armes disponibles sur le plateau</h1>
         <div class="row">
             <div id="GunImage2" class="col">
                 <p id="gun2Name">Galaxy Laser 2</p><img id="gun2Image" src="css/images/png/galaxyGun2.png">
@@ -41,6 +51,13 @@
             </div>
         </div>
     </div>
+    <div id="button">
+        <button type="button" class="btn btn-light" id="hideGunInfo">Réduire Infos Armes</button>
+        <button type="button" class="btn btn-light" id="showGunInfo">Etendre Infos Armes</button>
+        <button type="button" class="btn btn-light" id="hideNotice">Réduire Règles</button>
+        <button type="button" class="btn btn-light" id="showNotice">Etendre Règles</button>
+    </div><br />
+
     <div class="container">
         <div class="row">
             <div class="col" id="character1">
@@ -78,6 +95,7 @@
             </div>
         </div>
     </div>
+
 
 
     <script type="module" src="js/main.js"></script>

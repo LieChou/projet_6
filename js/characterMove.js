@@ -13,25 +13,25 @@ export class CharacterMove {
         let character = this.characterManager.getCharacter();
         switch (key) {
             case 37: //left
-                if ((character.X >= this.galaxyBoard.squareSize) && (character.checkGreySquaresLeft()) && character.checkLeftSquare()) {
+                if ((character.X >= this.galaxyBoard.squareSize) && (character.checkGreySquaresLeft())) {
                     character.moveLeft();
                     this.afterMove();
                 };
                 break;
             case 39: //right
-                if ((character.X <= this.galaxyBoard.maxWidth - this.galaxyBoard.squareSize) && (character.checkGreySquaresRight()) && character.checkRightSquare()) {
+                if ((character.X <= this.galaxyBoard.maxWidth - this.galaxyBoard.squareSize) && (character.checkGreySquaresRight())) {
                     character.moveRight();
                     this.afterMove();
                 };
                 break;
             case 38: //up
-                if ((character.Y >= this.galaxyBoard.squareSize) && (character.checkGreySquaresUp()) && character.checkUpSquare()) {
+                if ((character.Y >= this.galaxyBoard.squareSize) && (character.checkGreySquaresUp())) {
                     character.moveUp();
                     this.afterMove();
                 };
                 break;
             case 40: //down
-                if ((character.Y <= this.galaxyBoard.maxHeight - this.galaxyBoard.squareSize) && (character.checkGreySquaresDown()) && character.checkDownSquare()) {
+                if ((character.Y <= this.galaxyBoard.maxHeight - this.galaxyBoard.squareSize) && (character.checkGreySquaresDown())) {
                     character.moveDown();
                     this.afterMove();
                 };
@@ -45,8 +45,7 @@ export class CharacterMove {
                     this.characterManager.switchCharacter();
                 }
                 break;
-            default:
-                alert('Votre personnage est bloqué');
+            default: ;
         }
     }
 
@@ -55,6 +54,7 @@ export class CharacterMove {
         if (character.getCountMove() >= 3) {
             this.galaxyBoard.repaint();
             this.characterManager.switchCharacter();
+            character.characterRepaint();
         };
     }
 

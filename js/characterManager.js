@@ -41,6 +41,7 @@ export class CharacterManager {
                 ((this.currentCharacter.Y + this.board.squareSize === this.characters[i].Y) && (this.currentCharacter.X === this.characters[i].X))) {
                 alert("Le combat peut démarrer, le personnage " + this.currentCharacter.name + " va commencer");
                 this.fight();
+                return;
             }
         }
     }
@@ -55,14 +56,16 @@ export class CharacterManager {
         } else if (gameValue === '0') {
             character.defend(competitor);
         }
-        this.switchPlayer();
-        let c = this;
-        $(function () {
-            c.fight();
+        if ((character.life > 0) && (competitor.life > 0)) {
+            this.switchPlayer();
+            let c = this;
+            $(function () {
+                c.fight();
+            }
+            );
+        } else {
+            alert('Tapez sur la touche enter pour rejouer');
+            window.location.reload();
         }
-        );
     }
-
-
-
 }

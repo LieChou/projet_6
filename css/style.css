@@ -42,3 +42,12 @@ body{
     text-align: center;
     font-family: fantasy;
 }
+
+#button{
+    text-align: center;
+}
+
+#noticeInfo{
+    text-align: center;
+    color : white;
+}
