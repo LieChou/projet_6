@@ -8,6 +8,8 @@ export class CharacterManager {
 
     //function to get current character
     getCharacter() {
+        this.currentCharacter.emphasize();
+        this.getCompetitor().backToWhite();
         return this.currentCharacter;
     }
 

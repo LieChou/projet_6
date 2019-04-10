@@ -60,8 +60,10 @@ export class CharacterMove {
 
     afterMove() {
         let character = this.characterManager.getCharacter();
+        let competitor = this.characterManager.getCompetitor()
         character.characterMove()
         this.characterManager.initFight();
         this.checkCountMove();
+        competitor.characterRepaint();
     }
 }

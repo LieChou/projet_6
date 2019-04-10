@@ -16,12 +16,14 @@ $(function () {
     $('#showNotice').on('click', function () {
         $('#noticeInfo').show(1000);
     });
+
 });
+
+
 
 $(document).on('keyup',
     function (e) {
         let key = e.keyCode || e.which;
         characterMove.move(key);
-        //$('#ambiance').trigger('play');
     }
 )

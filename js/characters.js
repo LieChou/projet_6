@@ -49,10 +49,53 @@ export class Characters {
         }
     }
 
+    emphasize() {
+        if (this.name === "Valentina") {
+            $('#ch1').css('color', 'red');
+        } else if (this.name === "Alien") {
+            $('#ch2').css('color', 'red');
+        }
+    }
+
+    backToWhite() {
+        if (this.name === "Valentina") {
+            $('#ch1').css('color', 'white');
+        } else if (this.name === "Alien") {
+            $('#ch2').css('color', 'white');
+        }
+    }
+
+    attack(competitor) {
+        if (this.life > 0 && competitor.life > 0) { // check both players are still alive
+            competitor.life = competitor.life - this.gun.damage;
+            this.updateCompetitorInfo(competitor);
+            alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage + ' points de vie!');
+        }
+
+        if (competitor.life <= 0) {
+            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort.e, la partie est terminée !');
+            $('#ambiance').trigger('pause');
+            $('#winnerSong').trigger('play');
+        }
+    }
+
+    defend(competitor) {
+        if (this.life > 0 && competitor.life > 0) { // check both players are stille alive
+            this.life = this.life - competitor.gun.damage / 2;
+            this.updateInfo();
+            alert(this.name + ' s\'est défendu contre ' + competitor.name + ' et n\'a encaissé que ' + competitor.gun.damage / 2 + ' points de dégat');
+        }
+
+        if (competitor.life <= 0) {
+            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort.e, la partie est terminée ! ');
+            $('#ambiance').trigger('pause');
+            $('#winnerSong').trigger('play');
+        }
+    }
+
     startTurn() {
         this.firstX = this.X;
         this.firstY = this.Y;
-        //this.drawPath();
         this.countMove = 0;
         this.characterRepaint();
     }
@@ -94,15 +137,14 @@ export class Characters {
     }
 
     moveLeft() {
-        //clear current square
+        //clear current square and redraw it
         this.board.context.clearRect(this.X, this.Y, this.squareSize, this.squareSize);
-        //add white background and strokeStyle
         let coordX = this.X;
         this.board.context.fillStyle = "white";
         this.board.context.fillRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
-        //registering current coordinates to help moving character
+        //registering new coordinates to move character
         this.X = coordX - this.squareSize;
         //image creation on the new coordinates
         let characterImage = new Image();
@@ -110,6 +152,7 @@ export class Characters {
         characterImage.addEventListener('load', () => {
             this.board.context.drawImage(characterImage, this.X, this.Y);
         }, false);
+        this.board.repaint();
     }
 
     moveRight() {
@@ -125,6 +168,7 @@ export class Characters {
         characterImage.addEventListener('load', () => {
             this.board.context.drawImage(characterImage, this.X, this.Y);
         }, false);
+        this.board.repaint();
     }
 
     moveUp() {
@@ -140,6 +184,7 @@ export class Characters {
         characterImage.addEventListener('load', () => {
             this.board.context.drawImage(characterImage, this.X, this.Y);
         }, false);
+        this.board.repaint();
     }
 
     moveDown() {
@@ -155,6 +200,7 @@ export class Characters {
         characterImage.addEventListener('load', () => {
             this.board.context.drawImage(characterImage, this.X, this.Y);
         }, false);
+        this.board.repaint();
     }
 
     changeGun() {
@@ -181,31 +227,4 @@ export class Characters {
         this.changeGun()
     }
 
-    attack(competitor) {
-        if (this.life > 0 && competitor.life > 0) { // check both players are still alive
-            competitor.life = competitor.life - this.gun.damage;
-            this.updateCompetitorInfo(competitor);
-            alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage + ' points de vie!');
-        }
-
-        if (competitor.life <= 0) {
-            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort.e, la partie est terminée !');
-            $('#ambiance').trigger('pause');
-            $('#winnerSong').trigger('play');
-        }
-    }
-
-    defend(competitor) {
-        if (this.life > 0 && competitor.life > 0) { // check both players are stille alive
-            this.life = this.life - competitor.gun.damage / 2;
-            this.updateInfo();
-            alert(this.name + ' s\'est défendu contre ' + competitor.name + ' et n\'a encaissé que ' + competitor.gun.damage / 2 + ' points de dégat');
-        }
-
-        if (competitor.life <= 0) {
-            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort.e, la partie est terminée ! ');
-            $('#ambiance').trigger('pause');
-            $('#winnerSong').trigger('play');
-        }
-    }
 }
