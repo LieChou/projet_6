@@ -1,6 +1,19 @@
 import { CharacterMove } from "./characterMove.js";
+import { Images } from "./images.js";
 
-const characterMove = new CharacterMove();
+
+const images = new Images()
+
+images.loadAll(function () {
+    const characterMove = new CharacterMove(images);
+
+    $(document).on('keyup',
+        function (e) {
+            let key = e.keyCode || e.which;
+            characterMove.move(key);
+        });
+}
+);
 
 
 $(function () {
@@ -16,14 +29,4 @@ $(function () {
     $('#showNotice').on('click', function () {
         $('#noticeInfo').show(1000);
     });
-
 });
-
-
-
-$(document).on('keyup',
-    function (e) {
-        let key = e.keyCode || e.which;
-        characterMove.move(key);
-    }
-)

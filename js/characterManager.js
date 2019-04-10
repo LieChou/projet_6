@@ -9,7 +9,6 @@ export class CharacterManager {
     //function to get current character
     getCharacter() {
         this.currentCharacter.emphasize();
-        this.getCompetitor().backToWhite();
         return this.currentCharacter;
     }
 
@@ -56,7 +55,7 @@ export class CharacterManager {
         if (gameValue === '1') {
             character.attack(competitor);
         } else if (gameValue === '0') {
-            character.defend(competitor);
+            character.defendCharacter();
         }
         if ((character.life > 0) && (competitor.life > 0)) {
             this.switchPlayer();

@@ -2,11 +2,14 @@ import { CharacterManager } from "./characterManager.js";
 import { Board } from "./board.js";
 
 export class CharacterMove {
-    constructor() {
-        this.galaxyBoard = new Board(600, 600, 0, 0, 10);
+    constructor(images) {
+        console.log(images);
+        this.galaxyBoard = new Board(600, 600, 0, 0, 10, images);
         this.characterManager = new CharacterManager(this.galaxyBoard.viewedCharacters, this.galaxyBoard);
         this.characterManager.getCharacter().startTurn();
         this.characterManager.getCharacter().updateInfo();
+        this.images = images;
+
     }
 
     move(key) {

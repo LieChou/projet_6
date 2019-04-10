@@ -4,7 +4,7 @@ import { Gun } from "./gun.js";
 
 export class Board {
 
-    constructor(maxHeight, maxWidth, initialPositionX, initialPositionY, greySquareNumber, gun) {
+    constructor(maxHeight, maxWidth, initialPositionX, initialPositionY, greySquareNumber, images) {
         this.maxHeight = maxHeight;
         this.maxWidth = maxWidth;
         this.squareSize = maxWidth / 10;
@@ -32,7 +32,6 @@ export class Board {
         this.viewedCharacters = [];
         this.greySquares = [];
         this.gunNumber = 3;
-        this.gun = gun;
         this.guns = [
             {
                 "name": "Galaxy Laser2",
@@ -53,6 +52,8 @@ export class Board {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
         this.newGun = {};
+        this.images = images;
+        console.log(images);
         this.generateBoard();
         this.generateGreySquare();
         this.generateGuns();
@@ -100,11 +101,7 @@ export class Board {
                 let greySquareId = this.squareList[i].id;
                 const newGreySquare = new GreySquare(this.squareList[i].X, this.squareList[i].Y, "../css/images/png/blackSquare.png", greySquareId);
                 this.greySquares.push(newGreySquare);
-                let greySquareImage = new Image();
-                greySquareImage.src = newGreySquare.image;
-                greySquareImage.addEventListener('load', () => {
-                    this.context.drawImage(greySquareImage, this.squareList[i].X, this.squareList[i].Y);
-                }, false);
+                this.context.drawImage(this.images.blackSquareImage, this.squareList[i].X, this.squareList[i].Y);
             }
         }
     }
@@ -128,14 +125,10 @@ export class Board {
                 //character creation without repetition
                 let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
                 let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
-                let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
-                const newCharacter = new Characters(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y, idCharacter, this);
+                let newGun = new Gun('Galaxy Laser1', 10, this.images.gun1, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
+                const newCharacter = new Characters(splicedCharacter.name, newGun, this.images.getCharacterImage(splicedCharacter.name), this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y, idCharacter, this);
                 this.viewedCharacters.push(newCharacter);
-                let characterImage = new Image();
-                characterImage.src = newCharacter.image;
-                characterImage.addEventListener('load', () => {
-                    this.context.drawImage(characterImage, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
-                }, false);
+                this.context.drawImage(newCharacter.image, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
             }
         }
 
@@ -162,13 +155,11 @@ export class Board {
             if (this.squareList[i].squareIdentification === "gunHere") {
                 console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
                 let splicedGun = this.guns.splice(0, 1)[0];
-                const newGun = new Gun(splicedGun.name, splicedGun.damage, splicedGun.image, this.squareList[i].X, this.squareList[i].Y);
+                const newGun = new Gun(splicedGun.name, splicedGun.damage, this.images.getGunImage(splicedGun.name), this.squareList[i].X, this.squareList[i].Y);
                 this.viewedGuns.push(newGun);
-                let gunImage = new Image();
-                gunImage.src = newGun.image;
-                gunImage.addEventListener('load', () => {
-                    this.context.drawImage(gunImage, this.squareList[i].X, this.squareList[i].Y);
-                }, false);
+                console.log(newGun.image);
+                this.context.drawImage(newGun.image, this.squareList[i].X, this.squareList[i].Y);
+
             }
         }
     }
@@ -176,11 +167,7 @@ export class Board {
     repaint() {
         for (let i = 0; i < this.squareNumber; i++) {
             if (this.squareList[i].squareIdentification === "greySquareHere") {
-                let greySquareImage = new Image();
-                greySquareImage.src = "../css/images/png/blackSquare.png";
-                greySquareImage.addEventListener('load', () => {
-                    this.context.drawImage(greySquareImage, this.squareList[i].X, this.squareList[i].Y);
-                }, false);
+                this.context.drawImage(this.images.blackSquareImage, this.squareList[i].X, this.squareList[i].Y);
                 this.context.strokeStyle = "black";
                 this.context.strokeRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
             } else if (this.squareList[i].squareIdentification === "emptySquare") {
@@ -193,11 +180,7 @@ export class Board {
                     if ((this.viewedGuns[j].X === this.squareList[i].X) && (this.viewedGuns[j].Y === this.squareList[i].Y)) {
                         this.context.fillStyle = "white";
                         this.context.fillRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
-                        let gunImage = new Image();
-                        gunImage.src = this.viewedGuns[j].image;
-                        gunImage.addEventListener('load', () => {
-                            this.context.drawImage(gunImage, this.squareList[i].X, this.squareList[i].Y);
-                        }, false);
+                        this.context.drawImage(this.viewedGuns[j].image, this.squareList[i].X, this.squareList[i].Y);
                         this.context.strokeStyle = "black";
                         this.context.strokeRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
                     }

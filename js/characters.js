@@ -15,6 +15,7 @@ export class Characters {
         this.squareSize = this.board.squareSize;
         this.firstX;
         this.firstY;
+        this.defend = false;
     }
 
     updateInfo() {
@@ -23,13 +24,13 @@ export class Characters {
             $('#ch1Life').html(this.life);
             $('#ch1Gun').html(this.gun.name);
             $('#ch1GunDamage').html(this.gun.damage);
-            $('#ch1GunImage').attr('src', this.gun.image);
+            $('#ch1GunImage').attr('src', this.gun.image.src);
         } else if (this.name === "Alien") {
             $('#squareCount2').html(this.countMove);
             $('#ch2Life').html(this.life);
             $('#ch2Gun').html(this.gun.name);
             $('#ch2GunDamage').html(this.gun.damage);
-            $('#ch2GunImage').attr('src', this.gun.image);
+            $('#ch2GunImage').attr('src', this.gun.image.src);
         }
     }
 
@@ -39,37 +40,49 @@ export class Characters {
             $('#ch1Life').html(competitor.life);
             $('#ch1Gun').html(competitor.gun.name);
             $('#ch1GunDamage').html(competitor.gun.damage);
-            $('#ch1GunImage').attr('src', competitor.gun.image);
+            $('#ch1GunImage').attr('src', competitor.gun.image.src);
         } else if (competitor.name === "Alien") {
             $('#squareCount2').html(competitor.countMove);
             $('#ch2Life').html(competitor.life);
             $('#ch2Gun').html(competitor.gun.name);
             $('#ch2GunDamage').html(competitor.gun.damage);
-            $('#ch2GunImage').attr('src', competitor.gun.image);
+            $('#ch2GunImage').attr('src', competitor.gun.image.src);
         }
     }
 
     emphasize() {
         if (this.name === "Valentina") {
-            $('#ch1').css('color', 'red');
+            if (this.countMove <= 2) {
+                $('#ch1').css('color', 'red');
+                $('#ch2').css('color', 'white');
+            } else if (this.countMove > 2) {
+                $('#ch2').css('color', 'red');
+                $('#ch1').css('color', 'white');
+            }
         } else if (this.name === "Alien") {
-            $('#ch2').css('color', 'red');
-        }
-    }
+            if (this.countMove <= 2) {
+                $('#ch2').css('color', 'red');
+                $('#ch1').css('color', 'white');
 
-    backToWhite() {
-        if (this.name === "Valentina") {
-            $('#ch1').css('color', 'white');
-        } else if (this.name === "Alien") {
-            $('#ch2').css('color', 'white');
+            } else if (this.countMove > 2) {
+                $('#ch1').css('color', 'red');
+                $('#ch2').css('color', 'white');
+            }
         }
     }
 
     attack(competitor) {
-        if (this.life > 0 && competitor.life > 0) { // check both players are still alive
-            competitor.life = competitor.life - this.gun.damage;
-            this.updateCompetitorInfo(competitor);
-            alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage + ' points de vie!');
+        this.defend = false;
+        if (this.life > 0 && competitor.life > 0) {
+            if (!competitor.defend) {
+                competitor.life = competitor.life - this.gun.damage;
+                this.updateCompetitorInfo(competitor);
+                alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage + ' points de vie!');
+            } else {
+                competitor.life = competitor.life - this.gun.damage / 2;
+                this.updateCompetitorInfo(competitor);
+                alert(this.name + ' a attaqué ' + competitor.name + ' et lui a retiré ' + this.gun.damage / 2 + ' points de vie!');
+            }
         }
 
         if (competitor.life <= 0) {
@@ -79,18 +92,9 @@ export class Characters {
         }
     }
 
-    defend(competitor) {
-        if (this.life > 0 && competitor.life > 0) { // check both players are stille alive
-            this.life = this.life - competitor.gun.damage / 2;
-            this.updateInfo();
-            alert(this.name + ' s\'est défendu contre ' + competitor.name + ' et n\'a encaissé que ' + competitor.gun.damage / 2 + ' points de dégat');
-        }
-
-        if (competitor.life <= 0) {
-            alert(' ***Game Over*** Bravo ' + this.name + ' vous avez gagné ! ' + competitor.name + ' est mort.e, la partie est terminée ! ');
-            $('#ambiance').trigger('pause');
-            $('#winnerSong').trigger('play');
-        }
+    defendCharacter() {
+        this.defend = true;
+        alert(this.name + ' se défendra au prochain tour!');
     }
 
     startTurn() {
@@ -113,11 +117,7 @@ export class Characters {
         this.board.context.fillRect(this.X, this.Y, this.board.squareSize, this.board.squareSize);
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(this.X, this.Y, this.board.squareSize, this.board.squareSize);
-        let characterImage = new Image();
-        characterImage.src = this.image;
-        characterImage.addEventListener('load', () => {
-            this.board.context.drawImage(characterImage, this.X, this.Y);
-        }, false);
+        this.board.context.drawImage(this.image, this.X, this.Y);
     }
 
     checkGreySquaresRight() {
@@ -147,12 +147,8 @@ export class Characters {
         //registering new coordinates to move character
         this.X = coordX - this.squareSize;
         //image creation on the new coordinates
-        let characterImage = new Image();
-        characterImage.src = this.image;
-        characterImage.addEventListener('load', () => {
-            this.board.context.drawImage(characterImage, this.X, this.Y);
-        }, false);
         this.board.repaint();
+        this.board.context.drawImage(this.image, this.X, this.Y);
     }
 
     moveRight() {
@@ -163,12 +159,8 @@ export class Characters {
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
         this.X = coordX + this.squareSize;
-        let characterImage = new Image();
-        characterImage.src = this.image;
-        characterImage.addEventListener('load', () => {
-            this.board.context.drawImage(characterImage, this.X, this.Y);
-        }, false);
         this.board.repaint();
+        this.board.context.drawImage(this.image, this.X, this.Y);
     }
 
     moveUp() {
@@ -179,12 +171,9 @@ export class Characters {
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(this.X - 1, coordY - 1, this.squareSize, this.squareSize);
         this.Y = coordY - this.squareSize;
-        let characterImage = new Image();
-        characterImage.src = this.image;
-        characterImage.addEventListener('load', () => {
-            this.board.context.drawImage(characterImage, this.X, this.Y);
-        }, false);
         this.board.repaint();
+        this.board.context.drawImage(this.image, this.X, this.Y);
+
     }
 
     moveDown() {
@@ -195,12 +184,8 @@ export class Characters {
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(this.X - 1, coordY - 1, this.board.squareSize, this.board.squareSize);
         this.Y = coordY + this.squareSize;
-        let characterImage = new Image();
-        characterImage.src = this.image;
-        characterImage.addEventListener('load', () => {
-            this.board.context.drawImage(characterImage, this.X, this.Y);
-        }, false);
         this.board.repaint();
+        this.board.context.drawImage(this.image, this.X, this.Y);
     }
 
     changeGun() {
@@ -210,11 +195,7 @@ export class Characters {
                 this.gun.X = this.X;
                 this.gun.Y = this.Y;
                 //gun image creation
-                let gunImage = new Image();
-                gunImage.src = this.gun.image;
-                gunImage.addEventListener('load', () => {
-                    this.board.context.drawImage(gunImage, this.X, this.Y);
-                }, false);
+                this.board.context.drawImage(this.gun.image, this.X, this.Y);
                 //permutes both variables
                 [this.gun, this.board.viewedGuns[i]] = [this.board.viewedGuns[i], this.gun];
             }
