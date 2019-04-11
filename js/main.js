@@ -15,7 +15,6 @@ images.loadAll(function () {
 }
 );
 
-
 $(function () {
     $('#hideGunInfo').on('click', function () {
         $('#gunInfo').hide(1000);

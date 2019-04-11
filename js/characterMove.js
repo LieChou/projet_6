@@ -3,13 +3,11 @@ import { Board } from "./board.js";
 
 export class CharacterMove {
     constructor(images) {
-        console.log(images);
         this.galaxyBoard = new Board(600, 600, 0, 0, 10, images);
         this.characterManager = new CharacterManager(this.galaxyBoard.viewedCharacters, this.galaxyBoard);
         this.characterManager.getCharacter().startTurn();
         this.characterManager.getCharacter().updateInfo();
         this.images = images;
-
     }
 
     move(key) {
@@ -50,15 +48,7 @@ export class CharacterMove {
                 break;
             default: ;
         }
-    }
-
-    checkCountMove() {
-        let character = this.characterManager.getCharacter();
-        if (character.getCountMove() >= 3) {
-            this.galaxyBoard.repaint();
-            this.characterManager.switchCharacter();
-            character.characterRepaint();
-        };
+        //this.afterMove();
     }
 
     afterMove() {
@@ -68,5 +58,14 @@ export class CharacterMove {
         this.characterManager.initFight();
         this.checkCountMove();
         competitor.characterRepaint();
+    }
+
+    checkCountMove() {
+        let character = this.characterManager.getCharacter();
+        if (character.getCountMove() >= 3) {
+            this.galaxyBoard.repaint();
+            this.characterManager.switchCharacter();
+            character.characterRepaint();
+        };
     }
 }

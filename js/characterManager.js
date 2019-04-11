@@ -30,6 +30,7 @@ export class CharacterManager {
     //function to fight one after another
     switchPlayer() {
         this.currentCharacter = this.getCompetitor();
+        this.currentCharacter.emphasize();
         alert('C\'est au tour de ' + this.currentCharacter.name + ' de jouer!');
     }
 
@@ -40,8 +41,10 @@ export class CharacterManager {
                 ((this.currentCharacter.X + this.board.squareSize === this.characters[i].X) && (this.currentCharacter.Y === this.characters[i].Y)) ||
                 ((this.currentCharacter.Y - this.board.squareSize === this.characters[i].Y) && (this.currentCharacter.X === this.characters[i].X)) ||
                 ((this.currentCharacter.Y + this.board.squareSize === this.characters[i].Y) && (this.currentCharacter.X === this.characters[i].X))) {
-                alert("Le combat peut démarrer, le personnage " + this.currentCharacter.name + " va commencer");
-                this.fight();
+                let delay = () => {
+                    this.fight();
+                }
+                setTimeout(delay, 1000);
                 return;
             }
         }
@@ -49,6 +52,7 @@ export class CharacterManager {
 
     //function to fight
     fight() {
+        alert("Le combat peut démarrer, le personnage " + this.currentCharacter.name + " va commencer");
         let gameValue = prompt('Tapez 1 pour attaquer ou 0 pour vous défendre');
         let character = this.currentCharacter;
         let competitor = this.getCompetitor();
