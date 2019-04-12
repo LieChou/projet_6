@@ -1,10 +1,10 @@
-import { GreySquare } from "./greySquare.js";
+import { BlackSquare } from "./blackSquare.js";
 import { Characters } from "./characters.js";
 import { Gun } from "./gun.js";
 
 export class Board {
 
-    constructor(maxHeight, maxWidth, initialPositionX, initialPositionY, greySquareNumber, images) {
+    constructor(maxHeight, maxWidth, initialPositionX, initialPositionY, blackSquareNumber) {
         this.maxHeight = maxHeight;
         this.maxWidth = maxWidth;
         this.squareSize = maxWidth / 10;
@@ -15,7 +15,7 @@ export class Board {
         this.line = 0;
         this.initialPositionX = initialPositionX;
         this.initialPositionY = initialPositionY;
-        this.greySquareNumber = greySquareNumber;
+        this.blackSquareNumber = blackSquareNumber;
         this.squareList = [];
         this.characterNumber = 2;
         this.characters = [
@@ -30,7 +30,7 @@ export class Board {
                 "image": '../css/images/png/alien.png'
             }];
         this.viewedCharacters = [];
-        this.greySquares = [];
+        this.blackSquares = [];
         this.gunNumber = 3;
         this.guns = [
             {
@@ -52,10 +52,8 @@ export class Board {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
         this.newGun = {};
-        this.images = images;
-        console.log(images);
         this.generateBoard();
-        this.generateGreySquare();
+        this.generateBlackSquare();
         this.generateGuns();
         this.generateCharacters();
     }
@@ -84,24 +82,28 @@ export class Board {
         }
     }
 
-    generateGreySquare() {
+    generateBlackSquare() {
         //random creation of black squares
-        for (let i = 0; i < this.greySquareNumber; i++) {
-            let randomGreySquare = Math.floor(Math.random() * (this.squareNumber - 1));
-            if (this.squareList[randomGreySquare].squareIdentification !== "emptySquare") {
+        for (let i = 0; i < this.blackSquareNumber; i++) {
+            let randomBlackSquare = Math.floor(Math.random() * (this.squareNumber - 1));
+            if (this.squareList[randomBlackSquare].squareIdentification !== "emptySquare") {
                 i--;
             } else {
-                this.squareList[randomGreySquare].squareIdentification = "greySquareHere";
+                this.squareList[randomBlackSquare].squareIdentification = "blackSquareHere";
             }
         }
         //add them on the board
         for (let i = 0; i < this.squareNumber; i++) {
-            if (this.squareList[i].squareIdentification === "greySquareHere") {
+            if (this.squareList[i].squareIdentification === "blackSquareHere") {
                 console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
-                let greySquareId = this.squareList[i].id;
-                const newGreySquare = new GreySquare(this.squareList[i].X, this.squareList[i].Y, "../css/images/png/blackSquare.png", greySquareId);
-                this.greySquares.push(newGreySquare);
-                this.context.drawImage(this.images.blackSquareImage, this.squareList[i].X, this.squareList[i].Y);
+                let blackSquareId = this.squareList[i].id;
+                const newBlackSquare = new BlackSquare(this.squareList[i].X, this.squareList[i].Y, "../css/images/png/blackSquare.png", blackSquareId);
+                this.blackSquares.push(newBlackSquare);
+                let blackSquareImage = new Image();
+                blackSquareImage.src = newBlackSquare.image;
+                blackSquareImage.addEventListener('load', () => {
+                    this.context.drawImage(blackSquareImage, this.squareList[i].X, this.squareList[i].Y);
+                }, false);
             }
         }
     }
@@ -112,23 +114,28 @@ export class Board {
             let randomCharacterNumber = Math.floor(Math.random() * (this.squareNumber - 1));
             if (this.squareList[randomCharacterNumber].squareIdentification !== "emptySquare") {
                 i--;
-            } else if ((this.viewedCharacters.length > 0) && (
+            } else if ((this.viewedCharacters.length > 0) && ( //retry if characters are side by side
                 ((this.squareList[randomCharacterNumber].X - this.squareSize === this.viewedCharacters[0].X) && (this.squareList[randomCharacterNumber].Y === this.viewedCharacters[0].Y)) ||
                 ((this.squareList[randomCharacterNumber].X + this.squareSize === this.viewedCharacters[0].X) && (this.squareList[randomCharacterNumber].Y === this.viewedCharacters[0].Y)) ||
                 ((this.squareList[randomCharacterNumber].Y + this.squareSize === this.viewedCharacters[0].Y) && (this.squareList[randomCharacterNumber].X === this.viewedCharacters[0].X)) ||
                 ((this.squareList[randomCharacterNumber].Y - this.squareSize === this.viewedCharacters[0].Y) && (this.squareList[randomCharacterNumber].X === this.viewedCharacters[0].X))
             )) {
-                i--; //retry if characters are side by side
+                i--;
             } else {
                 this.squareList[randomCharacterNumber].squareIdentification = "characterHere";
                 let idCharacter = this.squareList[i].id;//idsquare added to the character instance
                 //character creation without repetition
                 let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
                 let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
-                let newGun = new Gun('Galaxy Laser1', 10, this.images.gun1, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
-                const newCharacter = new Characters(splicedCharacter.name, newGun, this.images.getCharacterImage(splicedCharacter.name), this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y, idCharacter, this);
+                let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
+                const newCharacter = new Characters(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y, idCharacter, this);
+                console.log(newCharacter.X + "/" + newCharacter.Y);
                 this.viewedCharacters.push(newCharacter);
-                this.context.drawImage(newCharacter.image, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
+                let characterImage = new Image();
+                characterImage.src = newCharacter.image;
+                characterImage.addEventListener('load', () => {
+                    this.context.drawImage(characterImage, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
+                }, false);
             }
         }
 
@@ -155,19 +162,25 @@ export class Board {
             if (this.squareList[i].squareIdentification === "gunHere") {
                 console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
                 let splicedGun = this.guns.splice(0, 1)[0];
-                const newGun = new Gun(splicedGun.name, splicedGun.damage, this.images.getGunImage(splicedGun.name), this.squareList[i].X, this.squareList[i].Y);
+                const newGun = new Gun(splicedGun.name, splicedGun.damage, splicedGun.image, this.squareList[i].X, this.squareList[i].Y);
                 this.viewedGuns.push(newGun);
-                console.log(newGun.image);
-                this.context.drawImage(newGun.image, this.squareList[i].X, this.squareList[i].Y);
-
+                let gunImage = new Image();
+                gunImage.src = newGun.image;
+                gunImage.addEventListener('load', () => {
+                    this.context.drawImage(gunImage, this.squareList[i].X, this.squareList[i].Y);
+                }, false);
             }
         }
     }
 
     repaint() {
         for (let i = 0; i < this.squareNumber; i++) {
-            if (this.squareList[i].squareIdentification === "greySquareHere") {
-                this.context.drawImage(this.images.blackSquareImage, this.squareList[i].X, this.squareList[i].Y);
+            if (this.squareList[i].squareIdentification === "blackSquareHere") {
+                let blackSquareImage = new Image();
+                blackSquareImage.src = "../css/images/png/blackSquare.png";
+                blackSquareImage.addEventListener('load', () => {
+                    this.context.drawImage(blackSquareImage, this.squareList[i].X, this.squareList[i].Y);
+                }, false);
                 this.context.strokeStyle = "black";
                 this.context.strokeRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
             } else if (this.squareList[i].squareIdentification === "emptySquare") {
@@ -180,7 +193,11 @@ export class Board {
                     if ((this.viewedGuns[j].X === this.squareList[i].X) && (this.viewedGuns[j].Y === this.squareList[i].Y)) {
                         this.context.fillStyle = "white";
                         this.context.fillRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
-                        this.context.drawImage(this.viewedGuns[j].image, this.squareList[i].X, this.squareList[i].Y);
+                        let gunImage = new Image();
+                        gunImage.src = this.viewedGuns[j].image;
+                        gunImage.addEventListener('load', () => {
+                            this.context.drawImage(gunImage, this.squareList[i].X, this.squareList[i].Y);
+                        }, false);
                         this.context.strokeStyle = "black";
                         this.context.strokeRect(this.squareList[i].X, this.squareList[i].Y, this.squareSize, this.squareSize);
                     }

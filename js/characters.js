@@ -112,28 +112,36 @@ export class Characters {
         return this.countMove;
     }
 
+    loadCharacterImage() {
+        let characterImage = new Image();
+        characterImage.src = this.image;
+        characterImage.addEventListener('load', () => {
+            this.board.context.drawImage(characterImage, this.X, this.Y);
+        }, false);
+    }
+
     characterRepaint() {
         this.board.context.fillStyle = "white";
         this.board.context.fillRect(this.X, this.Y, this.board.squareSize, this.board.squareSize);
         this.board.context.strokeStyle = "black";
         this.board.context.strokeRect(this.X, this.Y, this.board.squareSize, this.board.squareSize);
-        this.board.context.drawImage(this.image, this.X, this.Y);
+        this.loadCharacterImage();
     }
 
-    checkGreySquaresRight() {
-        return this.board.greySquares.filter(square => square.X === this.X + this.board.squareSize && square.Y === this.Y).length === 0;
+    checkBlackSquaresRight() {
+        return this.board.blackSquares.filter(square => square.X === this.X + this.board.squareSize && square.Y === this.Y).length === 0;
     }
 
-    checkGreySquaresLeft() {
-        return this.board.greySquares.filter(square => square.X === this.X - this.board.squareSize && square.Y === this.Y).length === 0;
+    checkBlackSquaresLeft() {
+        return this.board.blackSquares.filter(square => square.X === this.X - this.board.squareSize && square.Y === this.Y).length === 0;
     }
 
-    checkGreySquaresUp() {
-        return this.board.greySquares.filter(square => square.Y === this.Y - this.board.squareSize && square.X === this.X).length === 0;
+    checkBlackSquaresUp() {
+        return this.board.blackSquares.filter(square => square.Y === this.Y - this.board.squareSize && square.X === this.X).length === 0;
     }
 
-    checkGreySquaresDown() {
-        return this.board.greySquares.filter(square => square.Y === this.Y + this.board.squareSize && square.X === this.X).length === 0;
+    checkBlackSquaresDown() {
+        return this.board.blackSquares.filter(square => square.Y === this.Y + this.board.squareSize && square.X === this.X).length === 0;
     }
 
     moveLeft() {
@@ -148,7 +156,7 @@ export class Characters {
         this.X = coordX - this.squareSize;
         //image creation on the new coordinates
         this.board.repaint();
-        this.board.context.drawImage(this.image, this.X, this.Y);
+        this.loadCharacterImage();
     }
 
     moveRight() {
@@ -160,7 +168,7 @@ export class Characters {
         this.board.context.strokeRect(coordX - 1, this.Y - 1, this.squareSize, this.squareSize);
         this.X = coordX + this.squareSize;
         this.board.repaint();
-        this.board.context.drawImage(this.image, this.X, this.Y);
+        this.loadCharacterImage();
     }
 
     moveUp() {
@@ -172,8 +180,7 @@ export class Characters {
         this.board.context.strokeRect(this.X - 1, coordY - 1, this.squareSize, this.squareSize);
         this.Y = coordY - this.squareSize;
         this.board.repaint();
-        this.board.context.drawImage(this.image, this.X, this.Y);
-
+        this.loadCharacterImage();
     }
 
     moveDown() {
@@ -185,7 +192,7 @@ export class Characters {
         this.board.context.strokeRect(this.X - 1, coordY - 1, this.board.squareSize, this.board.squareSize);
         this.Y = coordY + this.squareSize;
         this.board.repaint();
-        this.board.context.drawImage(this.image, this.X, this.Y);
+        this.loadCharacterImage();
     }
 
     changeGun() {
@@ -195,7 +202,11 @@ export class Characters {
                 this.gun.X = this.X;
                 this.gun.Y = this.Y;
                 //gun image creation
-                this.board.context.drawImage(this.gun.image, this.X, this.Y);
+                let gunImage = new Image();
+                gunImage.src = this.gun.image;
+                gunImage.addEventListener('load', () => {
+                    this.board.context.drawImage(gunImage, this.X, this.Y);
+                }, false);
                 //permutes both variables
                 [this.gun, this.board.viewedGuns[i]] = [this.board.viewedGuns[i], this.gun];
             }

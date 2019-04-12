@@ -44,7 +44,7 @@ export class CharacterManager {
                 let delay = () => {
                     this.fight();
                 }
-                setTimeout(delay, 1000);
+                setTimeout(delay, 500);
                 return;
             }
         }
