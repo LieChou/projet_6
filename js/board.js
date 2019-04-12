@@ -87,10 +87,9 @@ export class Board {
         for (let i = 0; i < this.blackSquareNumber; i++) {
             let randomBlackSquare = Math.floor(Math.random() * (this.squareNumber - 1));
             if (this.squareList[randomBlackSquare].squareIdentification !== "emptySquare") {
-                console.log('déja pris');
                 i--;
-            } else if (this.viewedBlackSquares.length > 0) { //retry if blackSquare are side by side left/right/up/down
-                console.log('zone interdite zone interdite');
+            } else { //retry if blackSquare are side by side left/right/up/down
+                let notANeighbour = true;
                 for (let j = 0; j < this.viewedBlackSquares.length; j++) {
                     if (((this.squareList[randomBlackSquare].X + this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y - this.squareSize === this.viewedBlackSquares[j].Y)) ||
                         ((this.squareList[randomBlackSquare].X + this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y + this.squareSize === this.viewedBlackSquares[j].Y)) ||
@@ -100,29 +99,26 @@ export class Board {
                         ((this.squareList[randomBlackSquare].X - this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y === this.viewedBlackSquares[j].Y)) ||
                         ((this.squareList[randomBlackSquare].X === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y - this.squareSize === this.viewedBlackSquares[j].Y)) ||
                         ((this.squareList[randomBlackSquare].X === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y + this.squareSize === this.viewedBlackSquares[j].Y))) {
-                        i--;
+                        notANeighbour = false;
                     }
                 }
-            } else {
-                this.squareList[randomBlackSquare].squareIdentification = "blackSquareHere";
-            }
-        }
-
-        //add them on the board
-        for (let i = 0; i < this.squareNumber; i++) {
-            if (this.squareList[i].squareIdentification === "blackSquareHere") {
-                console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
-                const newBlackSquare = new BlackSquare(this.squareList[i].X, this.squareList[i].Y, "../css/images/png/blackSquare.png");
-                this.viewedBlackSquares.push(newBlackSquare);
-                let blackSquareImage = new Image();
-                blackSquareImage.src = newBlackSquare.image;
-                blackSquareImage.addEventListener('load', () => {
-                    this.context.drawImage(blackSquareImage, this.squareList[i].X, this.squareList[i].Y);
-                }, false);
+                if (notANeighbour) {
+                    this.squareList[randomBlackSquare].squareIdentification = "blackSquareHere";
+                    //add them on the board
+                    console.log(this.squareList[randomBlackSquare].X + "/" + this.squareList[randomBlackSquare].Y);
+                    const newBlackSquare = new BlackSquare(this.squareList[randomBlackSquare].X, this.squareList[randomBlackSquare].Y, "../css/images/png/blackSquare.png");
+                    this.viewedBlackSquares.push(newBlackSquare);
+                    let blackSquareImage = new Image();
+                    blackSquareImage.src = newBlackSquare.image;
+                    blackSquareImage.addEventListener('load', () => {
+                        this.context.drawImage(blackSquareImage, this.squareList[randomBlackSquare].X, this.squareList[randomBlackSquare].Y);
+                    }, false);
+                } else {
+                    i--;
+                }
             }
         }
     }
-
 
     generateCharacters() {
         //random creation of characters
