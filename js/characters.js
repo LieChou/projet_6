@@ -1,13 +1,12 @@
 export class Characters {
 
-    constructor(name, gun, image, X, Y, idCharacter, board) {
+    constructor(name, gun, image, X, Y, board) {
         this.name = name;
         this.life = 100;
         this.gun = gun;
         this.image = image;
         this.X = X;
         this.Y = Y;
-        this.idCharacter = idCharacter;
         this.countMove = 0;
         this.board = board;
         this.maxHeight = this.board.maxHeight;
@@ -24,13 +23,13 @@ export class Characters {
             $('#ch1Life').html(this.life);
             $('#ch1Gun').html(this.gun.name);
             $('#ch1GunDamage').html(this.gun.damage);
-            $('#ch1GunImage').attr('src', this.gun.image.src);
+            $('#ch1GunImage').attr('src', this.gun.image);
         } else if (this.name === "Alien") {
             $('#squareCount2').html(this.countMove);
             $('#ch2Life').html(this.life);
             $('#ch2Gun').html(this.gun.name);
             $('#ch2GunDamage').html(this.gun.damage);
-            $('#ch2GunImage').attr('src', this.gun.image.src);
+            $('#ch2GunImage').attr('src', this.gun.image);
         }
     }
 
@@ -129,19 +128,19 @@ export class Characters {
     }
 
     checkBlackSquaresRight() {
-        return this.board.blackSquares.filter(square => square.X === this.X + this.board.squareSize && square.Y === this.Y).length === 0;
+        return this.board.viewedBlackSquares.filter(square => square.X === this.X + this.board.squareSize && square.Y === this.Y).length === 0;
     }
 
     checkBlackSquaresLeft() {
-        return this.board.blackSquares.filter(square => square.X === this.X - this.board.squareSize && square.Y === this.Y).length === 0;
+        return this.board.viewedBlackSquares.filter(square => square.X === this.X - this.board.squareSize && square.Y === this.Y).length === 0;
     }
 
     checkBlackSquaresUp() {
-        return this.board.blackSquares.filter(square => square.Y === this.Y - this.board.squareSize && square.X === this.X).length === 0;
+        return this.board.viewedBlackSquares.filter(square => square.Y === this.Y - this.board.squareSize && square.X === this.X).length === 0;
     }
 
     checkBlackSquaresDown() {
-        return this.board.blackSquares.filter(square => square.Y === this.Y + this.board.squareSize && square.X === this.X).length === 0;
+        return this.board.viewedBlackSquares.filter(square => square.Y === this.Y + this.board.squareSize && square.X === this.X).length === 0;
     }
 
     moveLeft() {

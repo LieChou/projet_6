@@ -22,3 +22,5 @@ $(function () {
         $('#noticeInfo').show(1000);
     });
 });
+
+console.log(characterMove.galaxyBoard.viewedBlackSquares.length);

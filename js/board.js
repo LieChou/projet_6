@@ -30,7 +30,7 @@ export class Board {
                 "image": '../css/images/png/alien.png'
             }];
         this.viewedCharacters = [];
-        this.blackSquares = [];
+        this.viewedBlackSquares = [];
         this.gunNumber = 3;
         this.guns = [
             {
@@ -87,18 +87,33 @@ export class Board {
         for (let i = 0; i < this.blackSquareNumber; i++) {
             let randomBlackSquare = Math.floor(Math.random() * (this.squareNumber - 1));
             if (this.squareList[randomBlackSquare].squareIdentification !== "emptySquare") {
+                console.log('déja pris');
                 i--;
+            } else if (this.viewedBlackSquares.length > 0) { //retry if blackSquare are side by side left/right/up/down
+                console.log('zone interdite zone interdite');
+                for (let j = 0; j < this.viewedBlackSquares.length; j++) {
+                    if (((this.squareList[randomBlackSquare].X + this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y - this.squareSize === this.viewedBlackSquares[j].Y)) ||
+                        ((this.squareList[randomBlackSquare].X + this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y + this.squareSize === this.viewedBlackSquares[j].Y)) ||
+                        ((this.squareList[randomBlackSquare].X + this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y === this.viewedBlackSquares[j].Y)) ||
+                        ((this.squareList[randomBlackSquare].X - this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y - this.squareSize === this.viewedBlackSquares[j].Y)) ||
+                        ((this.squareList[randomBlackSquare].X - this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y + this.squareSize === this.viewedBlackSquares[j].Y)) ||
+                        ((this.squareList[randomBlackSquare].X - this.squareSize === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y === this.viewedBlackSquares[j].Y)) ||
+                        ((this.squareList[randomBlackSquare].X === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y - this.squareSize === this.viewedBlackSquares[j].Y)) ||
+                        ((this.squareList[randomBlackSquare].X === this.viewedBlackSquares[j].X) && (this.squareList[randomBlackSquare].Y + this.squareSize === this.viewedBlackSquares[j].Y))) {
+                        i--;
+                    }
+                }
             } else {
                 this.squareList[randomBlackSquare].squareIdentification = "blackSquareHere";
             }
         }
+
         //add them on the board
         for (let i = 0; i < this.squareNumber; i++) {
             if (this.squareList[i].squareIdentification === "blackSquareHere") {
                 console.log(this.squareList[i].X + "/" + this.squareList[i].Y);
-                let blackSquareId = this.squareList[i].id;
-                const newBlackSquare = new BlackSquare(this.squareList[i].X, this.squareList[i].Y, "../css/images/png/blackSquare.png", blackSquareId);
-                this.blackSquares.push(newBlackSquare);
+                const newBlackSquare = new BlackSquare(this.squareList[i].X, this.squareList[i].Y, "../css/images/png/blackSquare.png");
+                this.viewedBlackSquares.push(newBlackSquare);
                 let blackSquareImage = new Image();
                 blackSquareImage.src = newBlackSquare.image;
                 blackSquareImage.addEventListener('load', () => {
@@ -107,6 +122,7 @@ export class Board {
             }
         }
     }
+
 
     generateCharacters() {
         //random creation of characters
@@ -123,12 +139,11 @@ export class Board {
                 i--;
             } else {
                 this.squareList[randomCharacterNumber].squareIdentification = "characterHere";
-                let idCharacter = this.squareList[i].id;//idsquare added to the character instance
                 //character creation without repetition
                 let randomCharacterOfTWo = Math.floor(Math.random() * this.characters.length);
                 let splicedCharacter = this.characters.splice(randomCharacterOfTWo, 1)[0];
                 let newGun = new Gun('Galaxy Laser1', 10, '../css/images/png/galaxyGun1.png', this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y);
-                const newCharacter = new Characters(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y, idCharacter, this);
+                const newCharacter = new Characters(splicedCharacter.name, newGun, splicedCharacter.image, this.squareList[randomCharacterNumber].X, this.squareList[randomCharacterNumber].Y, this);
                 console.log(newCharacter.X + "/" + newCharacter.Y);
                 this.viewedCharacters.push(newCharacter);
                 let characterImage = new Image();
