@@ -23,4 +23,3 @@ $(function () {
     });
 });
 
-console.log(characterMove.galaxyBoard.viewedBlackSquares.length);

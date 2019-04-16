@@ -70,6 +70,16 @@ export class Characters {
         }
     }
 
+    updatePlayer() {
+        if (this.name === "Valentina") {
+            $('#ch1').css('color', 'red');
+            $('#ch2').css('color', 'white');
+        } else if (this.name === "Alien") {
+            $('#ch2').css('color', 'red');
+            $('#ch1').css('color', 'white');
+        }
+    }
+
     attack(competitor) {
         this.defend = false;
         if (this.life > 0 && competitor.life > 0) {
