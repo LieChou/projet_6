@@ -1,4 +1,6 @@
 # projet_6
+#Création d'un jeu de plateau en tour par tour en javascript
+
 Etape 1 : génération de la carte
 Commencez par générer aléatoirement la carte du jeu. Chaque case peut être soit :
 
